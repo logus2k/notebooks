@@ -1,0 +1,9 @@
+NOTB/
+typings/
+metals/
+.vscode/
+
+.fake
+.ionide
+metals.log
+metals*.*

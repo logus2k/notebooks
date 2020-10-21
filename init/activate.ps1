@@ -1,0 +1,1 @@
+.\NOTB\Scripts\activate
