@@ -27,9 +27,9 @@ def list_cube_roots(number_of_roots_to_list: int):
 
         if root == int(root):
             roots_counter += 1
-            print(f"{roots_counter} is a perfect cube of {root} = " +
-                  f"({roots_counter} x {roots_counter} x {roots_counter} = " +
-                  f"{roots_counter}^3)")
+            print(f"{roots_counter} is a perfect cube of {root} " +
+                  f"({roots_counter}^3 = {roots_counter} x " +
+                  f"{roots_counter} x {roots_counter})")
 
 
-list_cube_roots(500)
+list_cube_roots(50)
