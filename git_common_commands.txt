@@ -1,0 +1,458 @@
+# ###########################
+# Git Common Terms & Commands
+# ###########################
+
+
+# GLOSSARY
+# ########
+# https://mirrors.edge.kernel.org/pub/software/scm/git/docs/user-manual.html
+
+# --
+# A -- signals the end of options and disables further option processing. Any arguments after the -- are treated as filenames and arguments. An argument of - is equivalent to --
+
+# Branch 
+# A "branch" is an active line of development. The most recent commit on a branch is referred to as the tip of that branch. The tip of the branch is referenced by a branch head, which moves forward as additional development is done on the branch. A single Git repository can track an arbitrary number of branches, but your working tree is associated with just one of them (the "current" or "checked out" branch), and HEAD points to that branch.
+
+# Checkout
+# The action of updating all or part of the working tree with a tree object or blob from the object database, and updating the index and HEAD if the whole working tree has been pointed at a new branch.
+
+# Cherry-picking
+# In SCM jargon, "cherry pick" means to choose a subset of changes out of a series of changes (typically commits) and record them as a new series of changes on top of a different codebase. In Git, this is performed by the "git cherry-pick" command to extract the change introduced by an existing commit and to record it based on the tip of the current branch as a new commit.
+
+# Commit
+# As a noun: A single point in the Git history; the entire history of a project is represented as a set of interrelated commits. The word "commit" is often used by Git in the same places other revision control systems use the words "revision" or "version". Also used as a short hand for commit object.
+# As a verb: The action of storing a new snapshot of the project’s state in the Git history, by creating a new commit representing the current state of the index and advancing HEAD to point at the new commit.
+
+# Fast-forward
+# A fast-forward is a special type of merge where you have a revision and you are "merging" another branch's changes that happen to be a descendant of what you have. In such a case, you do not make a new merge commit but instead just update to his revision. This will happen frequently on a remote-tracking branch of a remote repository.
+
+# Fetch
+# Fetching a branch means to get the branch’s head ref from a remote repository, to find out which objects are missing from the local object database, and to get them, too. See also git-fetch(1).
+
+# HEAD
+# The current branch. In more detail: Your working tree is normally derived from the state of the tree referred to by HEAD. HEAD is a reference to one of the heads in your repository, except when using a detached HEAD, in which case it directly references an arbitrary commit.
+
+# Index
+# A collection of files with stat information, whose contents are stored as objects. The index is a stored version of your working tree. Truth be told, it can also contain a second, and even a third version of a working tree, which are used when merging.
+
+# Master
+# The default development branch. Whenever you create a Git repository, a branch named "master" is created, and becomes the active branch. In most cases, this contains the local development, though that is purely by convention and is not required.
+
+# Merge
+# As a verb: To bring the contents of another branch (possibly from an external repository) into the current branch. In the case where the merged-in branch is from a different repository, this is done by first fetching the remote branch and then merging the result into the current branch. This combination of fetch and merge operations is called a pull. Merging is performed by an automatic process that identifies changes made since the branches diverged, and then applies all those changes together. In cases where changes conflict, manual intervention may be required to complete the merge.
+# As a noun: unless it is a fast-forward, a successful merge results in the creation of a new commit representing the result of the merge, and having as parents the tips of the merged branches. This commit is referred to as a "merge commit", or sometimes just a "merge".
+
+# Object
+# The unit of storage in Git. It is uniquely identified by the SHA-1 of its contents. Consequently, an object cannot be changed.
+
+# Origin
+# The default upstream repository. Most projects have at least one upstream project which they track. By default origin is used for that purpose. New upstream updates will be fetched into remote-tracking branches named origin/name-of-upstream-branch, which you can see using git branch -r.
+
+# Plumbing
+# Cute name for core Git.
+
+# Porcelain
+# Cute name for programs and program suites depending on core Git, presenting a high level access to core Git. Porcelains expose more of a SCM interface than the plumbing
+
+# Pull
+# Pulling a branch means to fetch it and merge it.
+
+# Push
+# Pushing a branch means to get the branch’s head ref from a remote repository, find out if it is an ancestor to the branch’s local head ref, and in that case, putting all objects, which are reachable from the local head ref, and which are missing from the remote repository, into the remote object database, and updating the remote head ref. If the remote head is not an ancestor to the local head, the push fails.
+
+# Rebase
+# To reapply a series of changes from a branch to a different base, and reset the head of that branch to the result.
+
+# Ref
+# A name that begins with refs/ (e.g. refs/heads/master) that points to an object name or another ref (the latter is called a symbolic ref). For convenience, a ref can sometimes be abbreviated when used as an argument to a Git command; see gitrevisions(7) for details. Refs are stored in the repository.
+# The ref namespace is hierarchical. Different subhierarchies are used for different purposes (e.g. the refs/heads/ hierarchy is used to represent local branches).
+# There are a few special-purpose refs that do not begin with refs/. The most notable example is HEAD.
+
+# Remote repository
+# A repository which is used to track the same project but resides somewhere else. To communicate with remotes, see fetch or push.
+
+# Repository
+# A collection of refs together with an object database containing all objects which are reachable from the refs, possibly accompanied by meta data from one or more porcelains. A repository can share an object database with other repositories via alternates mechanism.
+
+# Stash entry
+# An object used to temporarily store the contents of a dirty working directory and the index for future reuse.
+
+# Tag
+# A ref under refs/tags/ namespace that points to an object of an arbitrary type (typically a tag points to either a tag or a commit object). In contrast to a head, a tag is not updated by the commit command. A Git tag has nothing to do with a Lisp tag (which would be called an object type in Git’s context). A tag is most typically used to mark a particular point in the commit ancestry chain.
+
+# Working tree
+# The tree of actual checked out files. The working tree normally contains the contents of the HEAD commit’s tree, plus any local changes that you have made but not yet committed.
+
+
+
+# CONFIG
+# ######
+
+# Check Git version.
+git --version
+
+# Configure code author's name and email.
+git config --global user.name "user_name"
+git config --global user.email "user_name@email_provider.com"
+
+# View global Git configuration.
+git config --global --list
+
+# View Git configurations for the current repository.
+git config --list
+
+# Initialize a Git repository in the current folder.
+git init
+
+# Delete all objects that are not in use anymore (garbage collection is done automatically).
+git gc
+
+# Runs the interactive program.
+git add -i
+
+# Runs the patch mode of the interactive program for myfile.txt.
+# Patch mode can also be used with stash, reset, checkout and commit commands.
+git add -p myfile.txt
+
+# Add a global alias for "praise".
+git config --global alias.praise blame
+
+
+
+# VIEW
+# ####
+
+# View commit logs.
+git log
+
+# View only the first line of 5 most recent commit logs.
+git log --oneline -5
+
+# View a log output summary.
+git shortlog
+
+# View a graph of commits.
+git log --graph --all --decorate --oneline
+
+# View the commit in two positions before the most recent commit (HEAD).
+git show HEAD~~
+
+# View the changes in the working tree that were not yet staged for the next commit.
+git diff 
+
+# View the changes between the staging area and the last commit (what would be committed if we run "git commit" without the "-a" option).
+git diff --cached
+git diff --staged
+
+# View the changes in the working tree since the last commit (what would be committed if we run "git commit -a").
+git diff HEAD
+
+# View the same output as in previous example, but only including myfile.txt.
+git diff HEAD myfile.txt
+
+# View the changes between the the master and the origin/master branches.
+git diff master origin/master
+git diff master..origin/master
+
+# View the changes between 3 versions before the last commit and the last commit.
+git diff HEAD~~~ HEAD
+
+# View the commit hash where another_branch_name diverges from master branch.
+git merge-base master another_branch_name
+
+# List commits as patches (diffs).
+git log -p
+git log --patch
+
+# List edits to lines 100-150 in myfile.txt.
+git log -L 100,150:myfile.txt
+
+
+
+# BLAME
+# #####
+
+# Annotate file with commit details.
+git blame myfile.txt
+
+# Ignore whitespace.
+git blame -w myfile.txt
+
+# Annotate lines 100-150.
+git blame -L 100,150 myfile.txt
+
+# Annotate lines 100-105.
+git blame -L 100,+5 myfile.txt
+
+# Annotate file at revision d9dba0.
+git blame d9dba0 myfile.txt
+git blame d9dba0 -- myfile.txt
+
+
+
+# BISECT
+# ######
+
+# Starts a bisect session.
+git bisect start
+
+# Specify the bisect "bad" point. If no tree-ish is provided, then HEAD will be used.
+git bisect bad
+git bisect HEAD
+
+# Specify the bisect "good" point.
+git bisect good 17bba7d
+
+# Exit the bisect mode and reposition HEAD to its previous position.
+git bisect reset
+
+
+
+# TAG
+# ###
+
+# Add a lightweight tag.
+git tag issue136 655da716e7
+
+# Add an annotated tag (most common).
+git tag -a v1.1 -m "Version 1.0" dd5c49428a0
+git tag -a -m "Key feature file added" shopping_cart 94857bbfc6
+
+# List tags.
+git tag --list
+
+# List tags beginning with "v2".
+git tag -l "v2*"
+
+# List tags with annotations with 3 lines maximum on each annotation.
+git tag -l -n3
+
+# View commits with tag "v0.1".
+git show "v0.1"
+
+# View diff between commits with tag "v1.0" and "v1.1".
+git diff v1.0..v1.1
+
+# Delete a tag.
+git tag --delete v1.1
+git tag -d v1.1
+
+# Push a specific tag to a remote server.
+git push origin v1.1
+
+# Push all tags to a remote server.
+git push origin --tags
+
+# Delete a remote tag (just like deleting a remote branch).
+git push origin :v1.1
+git push --delete origin v1.1
+git push -d origin v1.1
+
+# Checkout a tag (WARNING: Use with caution! We may get a detached HEAD!).
+git checkout v0.0
+
+# Undo a detached HEAD state.
+git switch -
+
+
+
+# BRANCH
+# ######
+
+# View summary of changes in the current branch.
+git status
+
+# View short summary of changes in the current branch.
+git status -s
+
+# Create a new branch and update the HEAD to set the new branch as the current branch.
+git checkout -b new_branch_name
+
+# Create a new branch starting from a specific commit.
+git checkout -b new_branch_name 109102c
+
+# Create a branch in detached HEAD state (to retain any commits made).
+git switch -c new_branch_name
+git branch new_branch_name
+
+# Change from current to another branch.
+git checkout another_branch_name
+
+# Merge the current branch with a target branch.
+git merge target_branch_name
+
+# Copy the remote branch master from the remote repository to the tracking branch origin/master in the local repository (refresh the tracking branch).
+git fetch origin master
+
+# Download objects and refs from another repository. Before fetching, prune (remove) any remote-tracking references that no longer exist on the remote.
+git fetch -p
+
+# Merge the local master (current branch) with the tracking branch (origin/master).
+git merge origin/master
+
+# Copy the local master to the remote master, updating the remote master in the process.
+# If it is successful, it also updates the tracking branch origin/master to reflect the new position of the remote master.
+git push origin master
+
+# Delete a local branch. More exactly, it only deletes the branch ref, which is its name.
+git branch -d branch_name
+
+# Force to delete a local branch, even if it contains uncommitted changes.
+git branch -D branch_name
+
+# Delete a tracking branch.
+git branch -d -r branch_name
+
+# View relationships between local and remote branches.
+git branch -vv
+
+# Delete a remote branch. As expected with a push, if successful it will also delete the tracking branch origin/branch_name.
+git push origin :branch_name
+
+# Clone a specific branch instead of the branch the remote HEAD is pointing to, usually the master branch. In addition you can pass a tag instead of branch for the same effect.
+git clone -branch branch_name
+
+
+
+# FILE
+# ####
+
+# Add all files in the working directory to the staging directory.
+git add .
+
+# Undo all file changes in the working directory.
+git restore .
+
+# Undo staging of a specific file.
+git restore --staged file_name
+
+# Export a range of commits to a diff patch file.
+git diff cb42af8 0522cc6 > exported.diff
+
+# Apply the changes in a diff patch file to the working directory.
+# The applied changes are not automatically commited.
+git apply exported.diff
+
+# Export all commits in a range to a formatted patch.
+# A formatted patch will create an individual file for each one of the commits.
+git format-patch 2e33d..655da
+
+# Export all the commits on current branch which are not in master branch.
+git format-patch master
+
+# Export a single commit.
+git format-patch -1 655da
+
+# Put patch files into a directory.
+git format-patch master -o directory_path
+
+# Export all patches as a single file.
+git format-patch 2e33d..655da --stdout > exported.patch
+
+# Apply the changes in a patch file ("am" stands for "apply mailbox").
+git am directory_path/patch_filename.patch
+
+# Apply all patches in a directory.
+# Note: Apparently the wildcard expansion does not work on Windows.
+#       Then I tried to apply each of the patches individually and it worked.
+git am directory_name/*.patch
+
+
+
+# CHERRY-PICK
+# ###########
+
+# Get a specific commit copied into the current branch.
+git cherry-pick d4e8411d09
+
+# Get a range of commits copied into the current branch.
+git cherry-pick d4e8411d09..57d290ec44
+
+
+
+# REBASE
+# ######
+
+# Rebase current branch to tip of master branch.
+git rebase master
+
+# Rebase new_feature branch to tip of master branch.
+git rebase master new_feature
+
+# Continue to the next commit (when the current commit is resolved while doing a rebase).
+git rebase --continue
+
+# Throw out the current commit and go to the next commit (during a rebase operation).
+git rebase --skip
+
+# Abort the current rebase operation.
+git rebase --abort
+
+# Rebase another branch which is not the current branch.
+# The new_base_branch tip will be used as the destination of the rebase.
+# The upstream_branch indicates the starting branch from where we'll get the commits.
+# The commits_to_rebase_branch indicates the branch where the commits are located.
+git rebase --onto new_base_branch upstream_branch commits_to_rebase_branch
+
+# Rebase as in the previous example, in this case going through interactive mode.
+git rebase -i --onto new_base_branch upstream_branch commits_to_rebase_branch
+
+# Undo, unless ORIG_HEAD has changed again (rebase, reset, merge: change ORIG_HEAD).
+git reset --hard ORIG_HEAD
+
+# Undo by rebasing to former merge-base SHA.
+git rebase --onto 9291f0c88 master new_feature
+
+# Rebase last 3 commits onto the same branch but with the opportunity to modify them.
+git rebase -i HEAD~3
+
+# Rebase after a pull is a cleaner option compared to a regular pull (fetch + merge).
+git pull --rebase
+git pull -r
+
+# Rebase after a pull, but preserve the merged commits that were created locally.
+git pull --rebase=preserve
+
+# Rebase after a pull using interactive mode.
+git pull --rebase=interactive
+
+
+
+# REMOTE
+# ######
+
+# Configure a remote repository named origin.
+git remote add origin remote_repository_url
+
+# Update the URL of a remote repository.
+git remote set-url origin remote_repository_new_url
+
+# Unset an existing upstream.
+git branch --unset-upstream branch_name
+
+# Update remote refs along with associated objects. For every branch that is up to date or successfully pushed, set an upstream (tracking) reference, used by argument-less "git pull" and other commands.
+git push -u origin branch_name
+
+# Pull files from the remote repository to the local repository.
+git pull
+
+# Clone a remote repository named "origin" to a local folder.
+git clone origin "local_folder_path"
+
+# View the names of remote repositories.
+git remote
+
+# View more information about origin repository.
+git remote show origin
+
+# Verify if a local repository is tracking the remote repository.
+git remote -v
+
+# Delete stale remote-tracking branches.
+git remote prune origin
+
+# View the effect of delete stale remote-tracking branches (before the action is taken).
+git remote prune origin --dry-run
+
+# Force the remote repository to accept the local commits, however newer commits in the remote repository will be ignored/lost. WARNING: Use with caution!
+git push -f
