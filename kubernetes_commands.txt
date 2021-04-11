@@ -1,0 +1,163 @@
+# Start minikube
+minikube start
+
+# Check if a kubernetes cluster is up and running
+kubectl get nodes
+
+# List all resources in the cluster
+kubectl get all
+
+# Create a pod using file helloworld.yaml
+kubectl create -f helloworld.yaml
+
+# Expose deployment helloworld as a service
+kubectl expose deployment helloworld --type=NodePort
+
+# Open service default/helloworld in the default browser
+minikube service helloworld
+
+# List deployment resources only
+kubectl get deployment
+
+# View the YAML of deployment/helloworld
+kubectl get deployment/helloworld -o yaml
+
+# View the YAML of service/helloworld
+kubectl get service/helloworld -o yaml
+
+# Show labels of pods
+kubectl get pods --show-labels
+
+# Show the labels of all resources
+kubectl get all --show-labels
+
+# Add a label to a pod at runtime
+kubectl label po/helloworld app=helloworldapp --overwrite
+
+# Add a label to a node at runtime
+kubectl label node/minikube infra=development --overwrite
+
+# Delete the app label on helloworld pod
+kubectl label pod/helloworld app-
+
+# List pods containing a specific label
+kubectl get pods --selector env=production
+kubectl get pods --selector dev-lead=carisa
+
+# List pods containing multiple labels
+kubectl get pods --selector dev-lead=karthik,env=staging
+
+# List pods not containing a specific value 
+kubectl get pods --selector dev-lead!=karthik
+kubectl get pods --selector dev-lead!=carisa,dev-lead!=chen
+
+# List pods containing a label which value is in a set of values 
+kubectl get pods -l "release-version in (1.0,2.0)"
+
+# List pods containing a label which value is not in a set of values 
+kubectl get pods -l "release-version notin (1.0,2.0)"
+
+# List pods and watch for changes
+kubectl get pods -w
+
+# Delete pods with a specific label
+kubectl delete pods -l dev-lead=karthik
+
+# Delete all pods
+kubectl delete pods --all
+
+# List pods and replicatsets
+kubectl get pods,replicasets
+
+# Show details of a specific resource or group of resources
+kubectl describe po/helloworld-deployment-with-bad-readiness-probe-6fb9c97fdd-hgjg9
+
+# For future introspection, record the command executed in the resource annotation
+# kubernetes.io/change-cause
+kubectl create -f .\helloworld-black.yaml --record
+
+# Update a deployment image
+kubectl set image deployment/navbar-deployment helloworld=karthequian/helloworld:blue
+
+# List the commands recorded in history for a specific deployment
+kubectl rollout history deployment/navbar-deployment
+
+# Rollback to previous version
+kubectl rollout undo deployment/navbar-deployment
+
+# Rollback to a specific version
+kubectl rollout undo deployment/navbar-deployment --to-revision=1.0
+
+# Show the logs of a specific deployment
+kubectl logs deployment/navbar-deployment
+
+# Execute a command inside a pod with a single container, e.g.: open a shell
+kubectl exec -it navbar-deployment-66db4977c8-c4s4z /bin/bash
+
+# In a pod containing multiple containers, execute a command in helloworld container
+kubectl exec -it navbar-deployment-66db4977c8-c4s4z -c helloworld /bin/bash
+
+# List available minikube addons
+minikube addons list
+
+# Enable a specific minikube addon
+minikube addons enable dashboard
+
+# Create a configmap named logger that will be used to dynamically send a container an environment variable named log_level with value debug
+kubectl create configmap logger --from-literal=log_level=debug
+
+# List all the available configmaps
+kubectl get configmaps
+
+# Output the content of a configmap named logger in YAML
+kubectl get configmap/logger -o yaml
+
+# Output the content of a configmap named logger in JSON
+kubectl get configmap/logger -o json
+
+# Create a secret named apikey
+kubectl create secret generic apikey --from-literal=api_key=1234567
+
+# List all available secrets
+kubectl get secrets
+
+# Show the details of a specific secret in YAML
+kubectl get secret apikey -o yaml
+
+# Edit the configuration file of a cronjob named hellocron
+# This is used, for example, to stop a cronjob
+kubectl edit cronjob hellocron
+
+# List all deployed deamonsets
+kubectl get daemonsets
+
+# Create a namespace
+kubectl create namespace finance
+
+# Delete a namespace and every other resource on it
+kubectl delete namespace/finance
+
+# Create a pod in the development namespace using file helloworld.yaml
+kubectl create -f helloworld.yaml -n development
+
+# List Kubernetes resources that are (or are not) in a namespace
+kubectl api-resources --namespaced=true
+kubectl api-resources --namespaced=false
+
+# Generate YAML from a command line and redirect it to be stored in a file
+kubectl run nginx --image=nginx --restart=Never --dry-run -o yaml > pod.yaml
+
+# Check the rollout status of a specific deployment
+kubectl rollout status deploy webapp1
+
+# Show the history of deploy rollouts of a specific deployment
+kubectl rollout history deploy webapp1
+
+# Undo the last deploy rollouts of a specific deployment
+kubectl rollout undo deploy webapp1
+
+# Scale the number of replicas of a specific deployment
+kubectl scale --replicas=30 deploy webapp1
+
+# Show the status of scheduler, controller manager, and etcd database
+kubectl get componentstatuses
