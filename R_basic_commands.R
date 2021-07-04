@@ -227,9 +227,10 @@ job_title <- c("Professional", "Programmer", "Management", "Clerical",
                "Developer", "Programmer")
 employee <- data.frame(id, name, job_title)
 
-
 # Separate the content of one column into two separate columns
-new_employee <- separate(employee, name, into = c("first_name", "last_name"), sep = " ")
+new_employee <- separate(employee, name,
+                         into = c("first_name", "last_name"),
+                         sep = " ")
 
 # Unite the content of two separate columns into one column
 unite(new_employee, name, first_name, last_name, sep = " ")
@@ -376,8 +377,8 @@ ggplot(data = hotel_bookings) +
 
 # Filtering the dataset to include only city hotels that are online TA
 onlineta_city_hotels <- filter(hotel_bookings, 
-                               (hotel=="City Hotel" & 
-                                hotel_bookings$market_segment=="Online TA"))
+                               (hotel == "City Hotel" & 
+                                hotel_bookings$market_segment == "Online TA"))
 
 # Display filtering result
 View(onlineta_city_hotels)
@@ -436,13 +437,9 @@ ggplot(hotel_bookings) +
     theme(plot.title = element_text(size = 20,
                                     color = "dark blue"),
           axis.text.x = element_text(angle = 45,
-                                     margin = margin(25, 0, 0, 0, "pt")),) +
+                                     margin = margin(25, 0, 0, 0, "pt")), ) +
     labs(title = "Comparison of Market Segments by Hotel Type for Hotel Bookings",
          caption = paste0("Data from ", mindate, " to ", maxdate),
          x = "Market Segment",
          y = "Number of Bookings",
          fill = "Market Segment")
-
-
-
-
