@@ -1,0 +1,202 @@
+
+
+1) Create the virtual networks
+
+1.1) Create the virtual network and subnet for the Sales systems:
+az network vnet create \
+    --resource-group learn-973a2d93-943e-483a-b7ad-f8bb2f157d38 \
+    --name SalesVNet \
+    --address-prefixes 10.1.0.0/16 \
+    --subnet-name Apps \
+    --subnet-prefixes 10.1.1.0/24 \
+    --location northeurope
+
+1.2) Create the virtual network and subnet for the Marketing systems:
+az network vnet create \
+    --resource-group learn-973a2d93-943e-483a-b7ad-f8bb2f157d38 \
+    --name MarketingVNet \
+    --address-prefixes 10.2.0.0/16 \
+    --subnet-name Apps \
+    --subnet-prefixes 10.2.1.0/24 \
+    --location northeurope
+
+1.3) Create the virtual network and subnet for the Research systems:
+az network vnet create \
+    --resource-group learn-973a2d93-943e-483a-b7ad-f8bb2f157d38 \
+    --name ResearchVNet \
+    --address-prefixes 10.3.0.0/16 \
+    --subnet-name Data \
+    --subnet-prefixes 10.3.1.0/24 \
+    --location westeurope --output jsonc
+
+
+2) Confirm the virtual network configuration
+
+2.1) View the virtual networks:
+az network vnet list --output table
+
+
+3) Create virtual machines in each virtual network
+
+3.1) Create an Ubuntu VM in the Apps subnet of SalesVNet. In the command, replace <password> with a password that meets the requirements for Linux VMs. Note this password for later use. The --no-wait parameter in this command lets you continue working in Cloud Shell while the VM is building:
+az vm create \
+    --resource-group learn-973a2d93-943e-483a-b7ad-f8bb2f157d38 \
+    --no-wait \
+    --name SalesVM \
+    --location northeurope \
+    --vnet-name SalesVNet \
+    --subnet Apps \
+    --image UbuntuLTS \
+    --admin-username azureuser \
+    --admin-password MyPassword123!
+
+3.2) create another Ubuntu VM in the Apps subnet of MarketingVNet. Replace <password> with a password that meets the requirements for Linux VMs. Note this password for later use:
+az vm create \
+    --resource-group learn-973a2d93-943e-483a-b7ad-f8bb2f157d38 \
+    --no-wait \
+    --name MarketingVM \
+    --location northeurope \
+    --vnet-name MarketingVNet \
+    --subnet Apps \
+    --image UbuntuLTS \
+    --admin-username azureuser \
+    --admin-password MyPassword123!
+
+3.3) Create an Ubuntu VM in the Data subnet of ResearchVNet. Replace <password> with a password that meets the requirements for Linux VMs. Note this password for later use:
+az vm create \
+    --resource-group learn-973a2d93-943e-483a-b7ad-f8bb2f157d38 \
+    --no-wait \
+    --name ResearchVM \
+    --location westeurope \
+    --vnet-name ResearchVNet \
+    --subnet Data \
+    --image UbuntuLTS \
+    --admin-username azureuser \
+    --admin-password MyPassword123!
+
+3.4) Confirm that the VMs are running:
+watch -d -n 5 "az vm list \
+    --resource-group learn-973a2d93-943e-483a-b7ad-f8bb2f157d38 \
+    --show-details \
+    --query '[*].{Name:name, ProvisioningState:provisioningState, PowerState:powerState}' \
+    --output table"
+
+
+4) Create virtual network peering connections
+
+4.1) Create the peering connection between the SalesVNet and MarketingVNet virtual networks. This command also permits virtual network access across this peering connection:
+az network vnet peering create \
+    --name SalesVNet-To-MarketingVNet \
+    --remote-vnet MarketingVNet \
+    --resource-group learn-973a2d93-943e-483a-b7ad-f8bb2f157d38 \
+    --vnet-name SalesVNet \
+    --allow-vnet-access
+
+4.2) Create a reciprocal connection from MarketingVNet to SalesVNet. This step completes the connection between these virtual networks:
+az network vnet peering create \
+    --name MarketingVNet-To-SalesVNet \
+    --remote-vnet SalesVNet \
+    --resource-group learn-973a2d93-943e-483a-b7ad-f8bb2f157d38 \
+    --vnet-name MarketingVNet \
+    --allow-vnet-access
+
+4.3) Create connections between Marketing and Research:
+az network vnet peering create \
+    --name MarketingVNet-To-ResearchVNet \
+    --remote-vnet ResearchVNet \
+    --resource-group learn-973a2d93-943e-483a-b7ad-f8bb2f157d38 \
+    --vnet-name MarketingVNet \
+    --allow-vnet-access
+
+4.4) Create the reciprocal connection between ResearchVNet and MarketingVNet:
+az network vnet peering create \
+    --name ResearchVNet-To-MarketingVNet \
+    --remote-vnet MarketingVNet \
+    --resource-group learn-973a2d93-943e-483a-b7ad-f8bb2f157d38 \
+    --vnet-name ResearchVNet \
+    --allow-vnet-access
+
+
+5) Check the virtual network peering connections
+
+5.1) Check the connection between SalesVNet and MarketingVNet:
+az network vnet peering list \
+    --resource-group learn-973a2d93-943e-483a-b7ad-f8bb2f157d38 \
+    --vnet-name SalesVNet \
+    --output table
+
+5.2) Check the peering connection between the ResearchVNet and MarketingVNet virtual networks:
+az network vnet peering list \
+    --resource-group learn-973a2d93-943e-483a-b7ad-f8bb2f157d38 \
+    --vnet-name ResearchVNet \
+    --output table
+
+5.3) Check the peering connections for the MarketingVNet virtual network:
+az network vnet peering list \
+    --resource-group learn-973a2d93-943e-483a-b7ad-f8bb2f157d38 \
+    --vnet-name MarketingVNet \
+    --output table
+
+
+6) Check effective routes
+
+6.1) Look at the routes that apply to the SalesVM network interface:
+az network nic show-effective-route-table \
+    --resource-group learn-973a2d93-943e-483a-b7ad-f8bb2f157d38 \
+    --name SalesVMVMNic \
+    --output table
+
+6.2) Look at the routes for MarketingVM:
+az network nic show-effective-route-table \
+    --resource-group learn-973a2d93-943e-483a-b7ad-f8bb2f157d38 \
+    --name MarketingVMVMNic \
+    --output table
+
+6.3) Look at the routes for ResearchVM:
+az network nic show-effective-route-table \
+    --resource-group learn-973a2d93-943e-483a-b7ad-f8bb2f157d38 \
+    --name ResearchVMVMNic \
+    --output table
+
+
+7) Test the virtual network peering connections
+
+7.1) List the IP addresses you'll use to connect to the VMs:
+az vm list \
+    --resource-group learn-973a2d93-943e-483a-b7ad-f8bb2f157d38 \
+    --query "[*].{Name:name, PrivateIP:privateIps, PublicIP:publicIps}" \
+    --show-details \
+    --output table
+
+Name         PrivateIP    PublicIP
+-----------  -----------  --------------
+MarketingVM  10.2.1.4     40.115.117.241
+SalesVM      10.1.1.4     40.127.101.118
+ResearchVM   10.3.1.4     20.93.138.41
+
+7.2) Use SSH to connect to the public IP address of SalesVM. In the command, replace <SalesVM public IP> with the VM's public IP address:
+ssh -o StrictHostKeyChecking=no azureuser@40.127.101.118
+
+7.3) Use SSH to connect to the private IP address of MarketingVM. In the command, replace <MarketingVM private IP> with this VM's private IP address:
+ssh -o StrictHostKeyChecking=no azureuser@10.2.1.4
+
+7.4) Use SSH to connect to the private IP address of ResearchVM. In the command, replace <ResearchVM private IP> with this VM's private IP address:
+ssh -o StrictHostKeyChecking=no azureuser@10.3.1.4
+
+7.5) Use SSH to connect to the public IP address of ResearchVM. In the command, replace <ResearchVM public IP> with this VM's public IP address:
+ssh -o StrictHostKeyChecking=no azureuser@20.93.138.41
+
+7.6) Use SSH to connect to the private IP address of MarketingVM. In the command, replace <MarketingVM private IP> with this VM's private IP address:
+ssh -o StrictHostKeyChecking=no azureuser@10.2.1.4
+
+7.7) Use SSH to connect to the private IP address of SalesVM. In the command, replace <SalesVM private IP> with this VM's private IP address:
+ssh -o StrictHostKeyChecking=no azureuser@10.1.1.4
+
+7.8) Use SSH to connect to the public IP address of MarketingVM. In the command, replace <MarketingVM public IP> with this VM's public IP address:
+ssh -o StrictHostKeyChecking=no azureuser@40.115.117.241
+
+7.9) Use SSH to connect to the private IP address of ResearchVM. In the command, replace <ResearchVM private IP> with this VM's private IP address:
+ssh -o StrictHostKeyChecking=no azureuser@10.3.1.4
+
+7.10) Use SSH to connect to the private IP address of SalesVM. In the command, replace <SalesVM private IP> with this VM's private IP address:
+ssh -o StrictHostKeyChecking=no azureuser@10.1.1.4

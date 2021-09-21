@@ -1,0 +1,115 @@
+1) Create a new Traffic Manager profile
+
+1.1) Creates the Traffic Manager profile by using the priority routing method:
+az network traffic-manager profile create \
+    --resource-group learn-ac09a5cf-7145-4f72-8779-0dbf1b3746fc \
+    --name TM-MusicStream-Priority \
+    --routing-method Priority \
+    --unique-dns-name TM-MusicStream-Priority-$RANDOM
+
+
+2) Deploy the web applications
+
+2.1) Deploy a Resource Manager template. The template creates two servers, one in the East Asia region, and one in the West US 2 region:
+az deployment group create \
+    --resource-group learn-ac09a5cf-7145-4f72-8779-0dbf1b3746fc \
+    --template-uri  https://raw.githubusercontent.com/MicrosoftDocs/mslearn-distribute-load-with-traffic-manager/master/azuredeploy.json \
+    --parameters password="$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 32)"
+
+
+3) Add the endpoints to Traffic Manager
+
+3.1) Add the public IP address resources of the virtual machines as endpoints to the Traffic Manager profile:
+WestId=$(az network public-ip show \
+    --resource-group learn-ac09a5cf-7145-4f72-8779-0dbf1b3746fc \
+    --name westus2-vm-nic-pip \
+    --query id \
+    --output tsv)
+
+az network traffic-manager endpoint create \
+    --resource-group learn-ac09a5cf-7145-4f72-8779-0dbf1b3746fc \
+    --profile-name TM-MusicStream-Priority \
+    --name "Primary-WestUS" \
+    --type azureEndpoints \
+    --priority 1 \
+    --target-resource-id $WestId
+
+EastId=$(az network public-ip show \
+    --resource-group learn-ac09a5cf-7145-4f72-8779-0dbf1b3746fc \
+    --name eastasia-vm-nic-pip \
+    --query id \
+    --output tsv)
+
+az network traffic-manager endpoint create \
+    --resource-group learn-ac09a5cf-7145-4f72-8779-0dbf1b3746fc \
+    --profile-name TM-MusicStream-Priority \
+    --name "Failover-EastAsia" \
+    --type azureEndpoints \
+    --priority 2 \
+    --target-resource-id $EastId
+
+3.2) Check the configured endpoints:
+az network traffic-manager endpoint list \
+    --resource-group learn-ac09a5cf-7145-4f72-8779-0dbf1b3746fc \
+    --profile-name TM-MusicStream-Priority \
+    --output table
+
+
+4) Test the app: display the IP addresses for each of the resources created
+
+4.1) Retrieve the address for the West US 2 web app:
+nslookup $(az network public-ip show \
+            --resource-group learn-ac09a5cf-7145-4f72-8779-0dbf1b3746fc \
+            --name westus2-vm-nic-pip \
+            --query dnsSettings.fqdn \
+            --output tsv)
+
+4.2) Retrieve the address for the East Asia web app:
+nslookup $(az network public-ip show \
+        --resource-group learn-ac09a5cf-7145-4f72-8779-0dbf1b3746fc \
+        --name eastasia-vm-nic-pip \
+        --query dnsSettings.fqdn \
+        --output tsv)
+
+4.3) Retrieve the address for the Traffic Manager profile:
+nslookup $(az network traffic-manager profile show \
+            --resource-group learn-ac09a5cf-7145-4f72-8779-0dbf1b3746fc \
+            --name TM-MusicStream-Priority \
+            --query dnsConfig.fqdn \
+            --output tsv)
+
+4.4) Go to the Traffic Manager profile's fully qualified domain name (FQDN). The request is routed to the endpoint that responds with the highest priority:
+echo http://$(az network traffic-manager profile show \
+    --resource-group learn-ac09a5cf-7145-4f72-8779-0dbf1b3746fc \
+    --name TM-MusicStream-Priority \
+    --query dnsConfig.fqdn \
+    --output tsv)
+
+4.5) Disable the primary endpoint:
+az network traffic-manager endpoint update \
+    --resource-group learn-ac09a5cf-7145-4f72-8779-0dbf1b3746fc  \
+    --name "Primary-WestUS" \
+    --profile-name TM-MusicStream-Priority \
+    --type azureEndpoints \
+    --endpoint-status Disabled
+
+4.6) Look again at what DNS shows for the web apps and for our Traffic Manager profile. Retrieve the address for the West US 2 web app:
+nslookup $(az network public-ip show \
+            --resource-group learn-ac09a5cf-7145-4f72-8779-0dbf1b3746fc \
+            --name westus2-vm-nic-pip \
+            --query dnsSettings.fqdn \
+            --output tsv)
+
+4.7) Retrieve the address for the East Asia web app:
+nslookup $(az network public-ip show \
+            --resource-group learn-ac09a5cf-7145-4f72-8779-0dbf1b3746fc \
+            --name eastasia-vm-nic-pip \
+            --query dnsSettings.fqdn \
+            --output tsv)
+
+4.8) Retrieve the address for the Traffic Manager profile:
+nslookup $(az network traffic-manager profile show \
+            --resource-group learn-ac09a5cf-7145-4f72-8779-0dbf1b3746fc \
+            --name TM-MusicStream-Priority \
+            --query dnsConfig.fqdn \
+            --output tsv)

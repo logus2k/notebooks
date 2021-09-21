@@ -1,0 +1,53 @@
+1) Create a Traffic Manager profile
+
+1.1) Create a new Traffic Manager profile that is set up with performance routing:
+az network traffic-manager profile create \
+    --resource-group learn-ac09a5cf-7145-4f72-8779-0dbf1b3746fc \
+    --name TM-MusicStream-Performance \
+    --routing-method Performance \
+    --unique-dns-name TM-MusicStream-Performance-$RANDOM \
+    --output table
+
+1.2) Create two new endpoints that point to the public IP addresses of the virtual machines:
+WestId=$(az network public-ip show \
+    --resource-group learn-ac09a5cf-7145-4f72-8779-0dbf1b3746fc \
+    --name westus2-vm-nic-pip \
+    --query id \
+    --output tsv)
+
+az network traffic-manager endpoint create \
+    --resource-group learn-ac09a5cf-7145-4f72-8779-0dbf1b3746fc \
+    --profile-name TM-MusicStream-Performance \
+    --name "WestUS" \
+    --type azureEndpoints \
+    --target-resource-id $WestId
+
+EastId=$(az network public-ip show \
+   --resource-group learn-ac09a5cf-7145-4f72-8779-0dbf1b3746fc \
+   --name eastasia-vm-nic-pip \
+   --query id \
+   --output tsv)
+
+az network traffic-manager endpoint create \
+   --resource-group learn-ac09a5cf-7145-4f72-8779-0dbf1b3746fc \
+   --profile-name TM-MusicStream-Performance \
+   --name "EastAsia" \
+   --type azureEndpoints \
+   --target-resource-id $EastId
+
+
+2) Test the new configuration
+
+2.1) Go to the Traffic Manager profiles fully qualified domain name (FQDN). Your request is routed to the endpoint that responds with the lowest latency:
+echo http://$(az network traffic-manager profile show \
+    --resource-group learn-ac09a5cf-7145-4f72-8779-0dbf1b3746fc \
+    --name TM-MusicStream-Performance \
+    --query dnsConfig.fqdn \
+    --output tsv)
+
+2.2) Resolve the Traffic Manager profile domain name:
+nslookup $(az network traffic-manager profile show \
+        --resource-group learn-ac09a5cf-7145-4f72-8779-0dbf1b3746fc \
+        --name TM-MusicStream-Performance \
+        --query dnsConfig.fqdn \
+        --output tsv)
