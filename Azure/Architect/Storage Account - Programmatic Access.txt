@@ -1,0 +1,154 @@
+
+1) Create a storage account
+
+az storage account create \
+  --resource-group learn-af154f99-77b3-41fd-b09f-b40e8a3d2aca \
+  --location westeurope \
+  --sku Standard_LRS \
+  --name photostore$RANDOM
+
+2) Add the Azure.Storage.Blobs package to an existing application:
+
+dotnet add package Azure.Storage.Blobs
+
+3) Get a storage account connection string:
+
+az storage account show-connection-string \
+  --resource-group learn-af154f99-77b3-41fd-b09f-b40e8a3d2aca \
+  --query connectionString \
+  --name photostore31647
+
+4) Use the touch tool on the command line to create a file named appsettings.json:
+
+touch appsettings.json
+
+5) Add the following text to appsettings.json file:
+
+{
+    "ConnectionStrings": {
+        "StorageAccount": "<value>"
+    }
+}
+
+6) Add the following configuration block to the PhotoSharingApp.csproj file in the project. Add <ItemGroup> from the existing code:
+
+<ItemGroup>
+    <None Update="appsettings.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+</ItemGroup>
+
+7) Add a reference to the Microsoft.Extensions.Configuration.Json NuGet package:
+
+dotnet add package Microsoft.Extensions.Configuration.Json
+
+
+8) Add the following code to Program.cs:
+
+using System;
+using Microsoft.Extensions.Configuration;
+using System.IO;
+using Azure.Storage.Blobs;
+
+namespace PhotoSharingApp
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+        var builder = new ConfigurationBuilder()
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile("appsettings.json");
+
+        var configuration = builder.Build();
+
+        // Get a connection string to our Azure Storage account.
+        var connectionString = configuration.GetConnectionString("StorageAccount");
+
+        // Get a reference to the container client object so you can create the "photos" container
+        string containerName = "photos";
+        BlobContainerClient container = new BlobContainerClient(connectionString, containerName);
+        container.CreateIfNotExists();
+
+        // Uploads the image to Blob storage.  If a blb already exists with this name it will be overwritten
+        string blobName = "docs-and-friends-selfie-stick";
+        string fileName = "docs-and-friends-selfie-stick.png";
+        BlobClient blobClient = container.GetBlobClient(blobName);
+        blobClient.Upload(fileName, true);
+
+        // List out all the blobs in the container
+        var blobs = container.GetBlobs();
+        foreach (var blob in blobs)
+        {
+            Console.WriteLine($"{blob.Name} --> Created On: {blob.Properties.CreatedOn:yyyy-MM-dd HH:mm:ss}  Size: {blob.Properties.ContentLength}");
+        }
+    }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

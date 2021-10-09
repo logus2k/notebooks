@@ -1,0 +1,187 @@
+
+1) Create a route table and custom route
+
+1.1) Create a route table:
+az network route-table create \
+        --name publictable \
+        --resource-group learn-64a3de6f-49e6-481c-a5c6-3fe19765837f \
+        --disable-bgp-route-propagation false
+
+1.2) Create a custom route:
+az network route-table route create \
+        --route-table-name publictable \
+        --resource-group learn-64a3de6f-49e6-481c-a5c6-3fe19765837f \
+        --name productionsubnet \
+        --address-prefix 10.0.1.0/24 \
+        --next-hop-type VirtualAppliance \
+        --next-hop-ip-address 10.0.2.4
+
+
+2) Create a virtual network and subnets
+
+2.1) Create the vnet virtual network and the publicsubnet subnet:
+az network vnet create \
+        --name vnet \
+        --resource-group learn-64a3de6f-49e6-481c-a5c6-3fe19765837f \
+        --address-prefixes 10.0.0.0/16 \
+        --subnet-name publicsubnet \
+        --subnet-prefixes 10.0.0.0/24
+
+2.2) Create the privatesubnet subnet:
+az network vnet subnet create \
+        --name privatesubnet \
+        --vnet-name vnet \
+        --resource-group learn-64a3de6f-49e6-481c-a5c6-3fe19765837f \
+        --address-prefixes 10.0.1.0/24
+
+2.3) Create the dmzsubnet subnet:
+az network vnet subnet create \
+        --name dmzsubnet \
+        --vnet-name vnet \
+        --resource-group learn-64a3de6f-49e6-481c-a5c6-3fe19765837f \
+        --address-prefixes 10.0.2.0/24
+
+2.4) You should now have three subnets. Run the following command to show all of the subnets in the vnet virtual network:
+az network vnet subnet list \
+        --resource-group learn-64a3de6f-49e6-481c-a5c6-3fe19765837f \
+        --vnet-name vnet \
+        --output table
+
+
+3) Associate the route table with the public subnet
+
+3.1) Associate the route table with the public subnet:
+az network vnet subnet update \
+        --name publicsubnet \
+        --vnet-name vnet \
+        --resource-group learn-64a3de6f-49e6-481c-a5c6-3fe19765837f \
+        --route-table publictable
+
+
+4) Create an NVA and virtual machines
+
+4.1) To build the NVA, deploy an Ubuntu LTS instance. Deploy the network virtual appliance:
+az vm create \
+    --resource-group learn-64a3de6f-49e6-481c-a5c6-3fe19765837f \
+    --name nva \
+    --vnet-name vnet \
+    --subnet dmzsubnet \
+    --image UbuntuLTS \
+    --admin-username azureuser \
+    --admin-password MyPassword123!
+
+
+5) Enable IP forwarding for the Azure network interface
+
+5.1) Get the ID of the NVA network interface:
+NICID=$(az vm nic list \
+    --resource-group learn-64a3de6f-49e6-481c-a5c6-3fe19765837f \
+    --vm-name nva \
+    --query "[].{id:id}" --output tsv)
+echo $NICID
+
+5.2) Get the name of the NVA network interface:
+NICNAME=$(az vm nic show \
+    --resource-group learn-64a3de6f-49e6-481c-a5c6-3fe19765837f \
+    --vm-name nva \
+    --nic $NICID \
+    --query "{name:name}" --output tsv)
+echo $NICNAME
+
+5.3) Enable IP forwarding for the network interface:
+az network nic update --name $NICNAME \
+    --resource-group learn-64a3de6f-49e6-481c-a5c6-3fe19765837f \
+    --ip-forwarding true
+
+
+6) Enable IP forwarding in the appliance
+
+6.1) Save the public IP address of the NVA virtual machine to the variable NVAIP:
+NVAIP="$(az vm list-ip-addresses \
+    --resource-group learn-64a3de6f-49e6-481c-a5c6-3fe19765837f \
+    --name nva \
+    --query "[].virtualMachine.network.publicIpAddresses[*].ipAddress" \
+    --output tsv)"
+echo $NVAIP
+
+6.2) Enable IP forwarding within the NVA:
+ssh -t -o StrictHostKeyChecking=no azureuser@$NVAIP 'sudo sysctl -w net.ipv4.ip_forward=1; exit;'
+
+
+7) Route traffic through the NVA
+
+7.1) Create public and private virtual machines - create a file named cloud-init.txt:
+code cloud-init.txt
+
+7.2) Add the following configuration information to the file. With this configuration, the inetutils-traceroute package is installed when you create a new VM. This package contains the traceroute utility that you'll use later:
+#cloud-config
+package_upgrade: true
+packages:
+   - inetutils-traceroute
+
+7.3) Create the public VM. Replace <password> with a suitable password for the azureuser account:
+az vm create \
+    --resource-group learn-64a3de6f-49e6-481c-a5c6-3fe19765837f \
+    --name public \
+    --vnet-name vnet \
+    --subnet publicsubnet \
+    --image UbuntuLTS \
+    --admin-username azureuser \
+    --no-wait \
+    --custom-data cloud-init.txt \
+    --admin-password MyPassword123!
+
+7.4) Create the private VM. Replace <password> with a suitable password:
+az vm create \
+    --resource-group learn-64a3de6f-49e6-481c-a5c6-3fe19765837f \
+    --name private \
+    --vnet-name vnet \
+    --subnet privatesubnet \
+    --image UbuntuLTS \
+    --admin-username azureuser \
+    --no-wait \
+    --custom-data cloud-init.txt \
+    --admin-password MyPassword123!
+
+7.5) Use Linux watch command to check that the VMs are running. The watch command periodically runs the az vm list command so that you can monitor the progress of the VMs:
+watch -d -n 5 "az vm list \
+    --resource-group learn-64a3de6f-49e6-481c-a5c6-3fe19765837f \
+    --show-details \
+    --query '[*].{Name:name, ProvisioningState:provisioningState, PowerState:powerState}' \
+    --output table"
+
+7.6) Save the public IP address of the public VM to a variable named PUBLICIP:
+PUBLICIP="$(az vm list-ip-addresses \
+    --resource-group learn-64a3de6f-49e6-481c-a5c6-3fe19765837f \
+    --name public \
+    --query "[].virtualMachine.network.publicIpAddresses[*].ipAddress" \
+    --output tsv)"
+echo $PUBLICIP
+
+7.7) Save the public IP address of the private VM to a variable named PRIVATEIP:
+PRIVATEIP="$(az vm list-ip-addresses \
+    --resource-group learn-64a3de6f-49e6-481c-a5c6-3fe19765837f \
+    --name private \
+    --query "[].virtualMachine.network.publicIpAddresses[*].ipAddress" \
+    --output tsv)"
+echo $PRIVATEIP
+
+
+8) Test traffic routing through the network virtual appliance
+
+8.1) Trace the route from public to private. When prompted, enter the password for the azureuser account that you specified earlier:
+ssh -t -o StrictHostKeyChecking=no azureuser@$PUBLICIP 'traceroute private --type=icmp; exit'
+
+8.2) The output should be similar to this example:
+traceroute to private.kzffavtrkpeulburui2lgywxwg.gx.internal.cloudapp.net (10.0.1.4), 64 hops max
+1   10.0.2.4  0.710ms  0.410ms  0.536ms
+2   10.0.1.4  0.966ms  0.981ms  1.268ms
+Connection to 52.165.151.216 closed.
+
+8.3) Trace the route from private to public. When prompted, enter the password for the azureuser account:
+ssh -t -o StrictHostKeyChecking=no azureuser@$PRIVATEIP 'traceroute public --type=icmp; exit'
+
+8.4) You should see the traffic go directly to public (10.0.0.4) and not through the NVA, as shown in the following command output. The private VM is using default routes, and traffic is routed directly between the subnets:
+traceroute to public.kzffavtrkpeulburui2lgywxwg.gx.internal.cloudapp.net (10.0.0.4), 64 hops max
+1   10.0.0.4  1.095ms  1.610ms  0.812ms
+Connection to 52.173.21.188 closed.

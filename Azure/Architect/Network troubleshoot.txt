@@ -1,0 +1,110 @@
+1) Configure a virtual network and VMs
+
+1.1) List the supported regions for your subscription:
+az account list-locations
+
+1.2) Create a resource group and assign it to the variable name RG by running the following code, replacing <resource group name> with a name for your resource group, and <name> with the name of the region from previous output:
+RG=rgcore
+loc=eastus
+az group create --name $RG --location $loc
+
+
+1.3) Create a virtual network named MyVNet1 with a subnet named FrontendSubnetby:
+az network vnet create \
+    --resource-group $RG \
+    --name MyVNet1 \
+    --address-prefixes 10.10.0.0/16 \
+    --subnet-name FrontendSubnet \
+    --subnet-prefixes 10.10.1.0/24
+
+1.4) Create another subnet called BackendSubnet:
+az network vnet subnet create \
+--address-prefixes 10.10.2.0/24 \
+--name BackendSubnet \
+--resource-group $RG \
+--vnet-name MyVNet1
+
+1.5) Deploy a VM in FrontendSubnet, replacing <password> with a password of your choice:
+az vm create \
+    --resource-group $RG \
+    --name FrontendVM \
+    --vnet-name MyVNet1 \
+    --subnet FrontendSubnet \
+     --image Win2019Datacenter \
+    --admin-username azureuser \
+    --admin-password MyPassword123!
+
+1.6) Install IIS on FrontendVM:
+az vm extension set \
+    --publisher Microsoft.Compute \
+    --name CustomScriptExtension \
+    --vm-name FrontendVM \
+    --resource-group $RG \
+    --settings '{"commandToExecute":"powershell.exe Install-WindowsFeature -Name Web-Server"}' \
+    --no-wait
+
+1.7) Deploy a VM in BackendSubnet , replacing <password> with a password of your choice:
+az vm create \
+    --resource-group $RG \
+    --name BackendVM \
+    --vnet-name MyVNet1 \
+    --subnet BackendSubnet \
+    --image Win2019Datacenter \
+    --admin-username azureuser \
+    --admin-password MyPassword123!
+
+1.8) Install IIS on BackendVM:
+az vm extension set \
+    --publisher Microsoft.Compute \
+    --name CustomScriptExtension \
+    --vm-name BackendVM \
+    --resource-group $RG \
+    --settings '{"commandToExecute":"powershell.exe Install-WindowsFeature -Name Web-Server"}' \
+    --no-wait
+
+1.9) Create a network security group (NSG) MyNsg:
+az network nsg create \
+    --name MyNsg \
+    --resource-group $RG
+
+1.10) Create a configuration mistake that prevents communication between the VMs:
+az network nsg rule create \
+    --resource-group $RG \
+    --name MyNSGRule \
+    --nsg-name MyNsg \
+    --priority 4096 \
+    --source-address-prefixes '*' \
+    --source-port-ranges '*' \
+    --destination-address-prefixes '*' \
+    --destination-port-ranges 80 443 3389 \
+    --access Deny \
+    --protocol TCP \
+    --direction Inbound \
+    --description "Deny from specific IP address ranges on 80, 443 and 3389."
+
+1.11) Run the following command to associate a network security group with a subnet:
+az network vnet subnet update \
+    --resource-group $RG \
+    --name BackendSubnet \
+    --vnet-name MyVNet1 \
+    --network-security-group MyNsg
+
+
+2) Enable Network Watcher for your region
+
+2.1) Enable Network Watcher:
+az network watcher configure \
+    --enabled true \
+    --resource-group $RG \
+    --location $loc
+
+
+3) Use Network Watcher to show the topology
+
+3.1) Sign in to the Azure portal.
+
+3.2) In the global search enter Network Watcher and select that service. The Network Watcher Overview pane appears, listing the active network watcher.
+
+3.3) In the Network Watcher menu, under Monitoring, select Topology. The Network Watcher | Topology pane appears.
+
+3.4) In the dropdown fields, select your Subscription and Resource Group for this exercise. The network topology for MyVNet1 displays the frontend and backend VM interfaces. This is the virtual network you created at the beginning of this exercise.

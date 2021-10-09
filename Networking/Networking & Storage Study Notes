@@ -1,0 +1,34 @@
+
+# Storage
+
+* A storage account name must be unique across all existing storage account names in Azure.
+* The storage account name must be 3 to 24 characters long and can contain only lowercase letters and numbers.
+* A single Azure subscription can host up to 200 storage accounts.
+* Each storage account can hold 500 TB of data.
+* Block blobs are used to hold text or binary files up to ~5 TB (50,000 blocks of 100 MB) in size.
+* Page blobs are used to hold random-access files up to 8 TB in size.
+* Page blobs have that name because they provide random read/write access to 512-byte pages.
+* A single append blob can be up to 195 GB.
+* A queue can contain millions of messages.
+* Each queue messages can be up to 64 KB in size.
+
+
+RFC 1918
+
+Class A
+10.0.0.0 - 10.255.255.255 (10/8 prefix)
+
+Class B
+172.16.0.0 - 172.31.255.255 (172.16/12 prefix)
+169.254.0.0 - 169.254.255.255
+
+Class C
+192.168.0.0 - 192.168.255.255 (192.168/16 prefix)
+
+
+
+https://portal.azure.com/learn.docs.microsoft.com
+
+
+https://gls-group.eu/PT/pt/gls-tracking?match=ZWKY46RH
+
