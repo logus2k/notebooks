@@ -1,0 +1,108 @@
+
+1) Get a configuration file and an Azure Resource Manager template from GitHub:
+
+git clone https://github.com/MicrosoftDocs/mslearn-choose-compute-provisioning.git
+
+2) The State Configuration is defined in the Webserver.ps1 file, which includes the IIS web server on your virtual machine:
+
+cd mslearn-choose-compute-provisioning
+code Webserver.ps1
+
+The configuration file includes the following code. Notice that it installs IIS, ASP.NET, and the IIS Management Console:
+
+Configuration Webserver
+{
+    param ($MachineName)
+
+    Node $MachineName
+    {
+        #Install the IIS Role
+        WindowsFeature IIS
+        {
+            Ensure = "Present"
+            Name = "Web-Server"
+        }
+
+        #Install ASP.NET 4.5
+        WindowsFeature ASP
+        {
+            Ensure = "Present"
+            Name = "Web-Asp-Net45"
+        }
+
+        WindowsFeature WebServerManagementConsole
+        {
+            Name = "Web-Mgmt-Console"
+            Ensure = "Present"
+        }
+    }
+}
+
+3) Open the template:
+
+code template.json
+
+4) Replace this code:
+
+"modulesUrl": {
+    "type": "string",
+    "metadata": {
+        "description": "URL for the DSC configuration module."
+    }
+},
+
+With this code, and save the template:
+
+"modulesUrl": {
+    "type": "string",
+    "defaultValue": "https://github.com/MicrosoftDocs/mslearn-choose-compute-provisioning/raw/master/Webserver.zip",
+    "metadata": {
+        "description": "URL for the DSC configuration module."
+    }
+},
+
+5) Validate the files to see if the deployment will be successful:
+
+az deployment group validate \
+    --resource-group learn-c22788d8-10ae-46a5-9544-7fd946ebf91c \
+    --template-file template.json \
+    --parameters vmName=hostVM1 adminUsername=serveradmin
+
+Note: If your deployment is validated, you'll see information about your deployment. Pay special attention to the error property, which is near the beginning of the output and can be found by scrolling back through the output text. It should be null.
+
+6) After validation is successful, deploy the template:
+
+az deployment group create \
+    --resource-group learn-c22788d8-10ae-46a5-9544-7fd946ebf91c \
+    --template-file template.json \
+    --parameters vmName=hostVM1 adminUsername=serveradmin
+
+7) To confirm the deployment, list all the resources in the resource group:
+
+az resource list \
+    --resource-group learn-c22788d8-10ae-46a5-9544-7fd946ebf91c \
+    --output table \
+    --query "[*].{Name:name, Type:type}"
+
+Response:
+Name                  Type
+--------------------  --------------------------------------------
+hostVM1               Microsoft.Compute/virtualMachines
+hostVM1/dscExtension  Microsoft.Compute/virtualMachines/extensions
+dscNIC                Microsoft.Network/networkInterfaces
+dscPubIP              Microsoft.Network/publicIPAddresses
+dscVNET               Microsoft.Network/virtualNetworks
+
+8) Generate the URL for the Web server. The output IP address confirms that IIS was successfully installed:
+
+echo http://$(az vm show \
+    --show-details \
+    --resource-group learn-c22788d8-10ae-46a5-9544-7fd946ebf91c \
+    --name hostVM1 \
+    --query publicIps \
+    --output tsv)
+
+Response:
+http://40.112.137.242
+
+9) Select the URL, or copy and paste it into a new browser window. You should see the default IIS page.

@@ -1,0 +1,57 @@
+1) Create an Azure storage context object:
+
+$context = New-AzureStorageContext -StorageAccountName <your-storage-account-name> -StorageAccountKey <your-storage-account-key>
+
+2) Configure minute-level storage metrics, with a retention period of seven days:
+
+Set-AzureStorageServiceMetricsProperty -Context $context -ServiceType Blob -MetricsType Minute -MetricsLevel ServiceAndApi -PassThru -RetentionDays 7
+
+3) View the metrics configuration for the blob service in the storage account:
+
+Get-AzureStorageServiceProperty -Context $context -ServiceType Blob
+
+4) Download the sample code for this exercise:
+
+git clone https://github.com/MicrosoftDocs/mslearn-monitor-diagnose-and-troubleshoot-azure-storage storageapps
+
+5) Move to the storageapps/StorageTest folder:
+
+cd $HOME/storageapps/StorageTest
+
+6) Run the sample app that simulates uploading files to blob storage. Replace <your connection string> with the connection string for your storage account. Ensure that you surround your connection string with double-quotes:
+
+dotnet run "<your connection string>" testcontainer
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

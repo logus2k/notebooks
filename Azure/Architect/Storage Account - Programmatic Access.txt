@@ -7,6 +7,26 @@ az storage account create \
   --sku Standard_LRS \
   --name photostore$RANDOM
 
+OR, in case we want to set replication:
+
+STORAGEACCT=$(az storage account create \
+        --resource-group learn-d6b6b11e-087f-4461-b8a0-1bf644d6e22c \
+        --name healthcareapp$RANDOM \
+        --sku Standard_RAGRS \
+        --output tsv \
+        --query "name")
+
+echo $STORAGEACCT
+(returns:
+"healthcareapp3808"
+)
+
+Verify the replication status:
+
+az storage account show \
+        --name $STORAGEACCT \
+        --query "[statusOfPrimary, statusOfSecondary]"
+
 2) Add the Azure.Storage.Blobs package to an existing application:
 
 dotnet add package Azure.Storage.Blobs
@@ -17,6 +37,58 @@ az storage account show-connection-string \
   --resource-group learn-af154f99-77b3-41fd-b09f-b40e8a3d2aca \
   --query connectionString \
   --name photostore31647
+
+OR
+
+az storage account show-connection-string \
+        --name $STORAGEACCT \
+        --resource-group learn-d6b6b11e-087f-4461-b8a0-1bf644d6e22c
+(returns:
+{
+  "connectionString": "DefaultEndpointsProtocol=https;EndpointSuffix=core.windows.net;AccountName=healthcareapp3808;AccountKey=9UJRp7ijyuF9e671RCcNp6fPg8PQGm9EmDP1vAObuyp1UDw+r/qf5EH7ZTldbPWQy+QKfFL4OzHvlDPhPaM81g=="
+}
+)
+
+3.1 ) View the replication status of the storage account:
+
+az storage account show \
+        --name $STORAGEACCT \
+        --expand geoReplicationStats \
+        --query "[primaryEndpoints, secondaryEndpoints, geoReplicationStats]"
+
+(returns:
+[
+  {
+    "blob": "https://healthcareapp3808.blob.core.windows.net/",
+    "dfs": "https://healthcareapp3808.dfs.core.windows.net/",
+    "file": "https://healthcareapp3808.file.core.windows.net/",
+    "internetEndpoints": null,
+    "microsoftEndpoints": null,
+    "queue": "https://healthcareapp3808.queue.core.windows.net/",
+    "table": "https://healthcareapp3808.table.core.windows.net/",
+    "web": "https://healthcareapp3808.z22.web.core.windows.net/"
+  },
+  {
+    "blob": "https://healthcareapp3808-secondary.blob.core.windows.net/",
+    "dfs": "https://healthcareapp3808-secondary.dfs.core.windows.net/",
+    "file": null,
+    "internetEndpoints": null,
+    "microsoftEndpoints": null,
+    "queue": "https://healthcareapp3808-secondary.queue.core.windows.net/",
+    "table": "https://healthcareapp3808-secondary.table.core.windows.net/",
+    "web": "https://healthcareapp3808-secondary.z22.web.core.windows.net/"
+  },
+  {
+    "canFailover": true,
+    "lastSyncTime": "2021-10-09T19:29:44+00:00",
+    "status": "Live"
+  }
+]
+)
+
+3.2) Manually failover (only available in WestUS2 and CentralUS regions):
+
+az storage account failover --name "storageaccountname"
 
 4) Use the touch tool on the command line to create a file named appsettings.json:
 

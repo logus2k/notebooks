@@ -1,0 +1,152 @@
+1) Create an Ubuntu VM in the "West US" location:
+
+az vm create \
+  --resource-group learn-10267844-d8cd-43b4-bdb7-e52b85a19a78 \
+  --location westus \
+  --name SampleVM \
+  --image UbuntuLTS \
+  --admin-username azureuser \
+  --generate-ssh-keys \
+  --verbose
+
+Note: You can add the --no-wait option to tell the Azure CLI tool to return immediately and have Azure continue creating the VM in the background. This is useful if you're executing the command in a script.
+
+Response:
+{
+  "fqdns": "",
+  "id": "/subscriptions/20f4b944-fc7a-4d38-b02c-900c8223c3a0/resourceGroups/Learn-2568d0d0-efe3-4d04-a08f-df7f009f822a/providers/Microsoft.Compute/virtualMachines/SampleVM",
+  "location": "westus",
+  "macAddress": "00-0D-3A-58-F8-45",
+  "powerState": "VM running",
+  "privateIpAddress": "10.0.0.4",
+  "publicIpAddress": "40.83.165.85",
+  "resourceGroup": "2568d0d0-efe3-4d04-a08f-df7f009f822a",
+  "zones": ""
+}
+
+2) List the most popular VM images available:
+
+az vm image list --output table
+
+3) List all the VM images available in the Azure Markeplace:
+
+az vm image list --publisher Microsoft --output table --all
+
+4) List all the Wordpress VM images available in the Azure Markeplace:
+
+az vm image list --sku Wordpress --output table --all
+
+5) List of VM images available in a specific region:
+
+az vm image list --location eastus --output table
+
+Note: Azure defines a set of pre-defined VM sizes for Linux and Windows to choose from based on the expected usage.
+
+# PRE-DEFINED VM SIZES (Type, Sizes, Description):
+
+* General purpose: Dsv3, Dv3, DSv2, Dv2, DS, D, Av2, A0-7
+Balanced CPU-to-memory. Ideal for dev/test and small to medium applications and data solutions.
+
+* Compute optimized: Fs, F
+High CPU-to-memory. Good for medium-traffic applications, network appliances, and batch processes.
+
+* Memory optimized: Esv3, Ev3, M, GS, G, DSv2, DS, Dv2, D
+High memory-to-core. Great for relational databases, medium to large caches, and in-memory analytics.
+
+* Storage optimized: Ls
+High disk throughput and IO. Ideal for big data, SQL, and NoSQL databases.
+
+* GPU optimized: NV, NC
+Specialized VMs targeted for heavy graphic rendering and video editing.
+
+* High performance: H, A8-11
+Our most powerful CPU VMs with optional high-throughput network interfaces (RDMA).
+
+6) The available sizes change based on the region you're creating the VM in. You can get a list of the available sizes:
+
+az vm list-sizes --location eastus --output table
+
+Response:
+MaxDataDiskCount    MemoryInMb  Name                      NumberOfCores    OsDiskSizeInMb    ResourceDiskSizeInMb
+------------------  ------------  ----------------------  ---------------  ----------------  ----------------------
+                 2          2048  Standard_B1ms                         1           1047552                    4096
+                 2          1024  Standard_B1s                          1           1047552                    2048
+                 4          8192  Standard_B2ms                         2           1047552                   16384
+                 4          4096  Standard_B2s                          2           1047552                    8192
+                 8         16384  Standard_B4ms                         4           1047552                   32768
+                16         32768  Standard_B8ms                         8           1047552                   65536
+                 4          3584  Standard_DS1_v2                       1           1047552                    7168
+                 8          7168  Standard_DS2_v2                       2           1047552                   14336
+                16         14336  Standard_DS3_v2                       4           1047552                   28672
+                32         28672  Standard_DS4_v2                       8           1047552                   57344
+                64         57344  Standard_DS5_v2                      16           1047552                  114688
+        ....
+                64       3891200  Standard_M128-32ms                  128           1047552                 4096000
+                64       3891200  Standard_M128-64ms                  128           1047552                 4096000
+                64       3891200  Standard_M128ms                     128           1047552                 4096000
+                64       2048000  Standard_M128s                      128           1047552                 4096000
+                64       1024000  Standard_M64                         64           1047552                 8192000
+                64       1792000  Standard_M64m                        64           1047552                 8192000
+                64       2048000  Standard_M128                       128           1047552                16384000
+                64       3891200  Standard_M128m                      128           1047552                16384000
+
+
+7) we can specify the size as part of the vm create command using the --size parameter.
+For example, create a 2-core virtual machine:
+
+az vm create \
+    --resource-group learn-10267844-d8cd-43b4-bdb7-e52b85a19a78 \
+    --name SampleVM2 \
+    --image UbuntuLTS \
+    --admin-username azureuser \
+    --generate-ssh-keys \
+    --verbose \
+    --size "Standard_DS2_v2"
+
+8) We can resize an existing VM if the workload changes, or if it was incorrectly sized at creation.
+Before a resize is requested, we can check if the desired size is available in the cluster our VM is part of:
+
+az vm list-vm-resize-options \
+    --resource-group learn-10267844-d8cd-43b4-bdb7-e52b85a19a78 \
+    --name SampleVM \
+    --output table
+
+9) To resize a VM, we use the vm resize command.
+For example, perhaps we find our VM is underpowered for the task we want it to perform.
+We could bump it up to a D2s_v3 where it has 2 vCores and 8 GB of memory:
+
+az vm resize \
+    --resource-group learn-10267844-d8cd-43b4-bdb7-e52b85a19a78 \
+    --name SampleVM \
+    --size Standard_D2s_v3
+
+10) Return all virtual machines defined in a subscription:
+
+az vm list --output table
+
+Note: The output can be filtered to a specific resource group through the --resource-group parameter.
+
+11) List the public and private IP addresses for a VM:
+
+az vm list-ip-addresses -n SampleVM -o table
+
+Response
+VirtualMachine    PublicIPAddresses    PrivateIPAddresses
+----------------  -------------------  --------------------
+SampleVM          168.61.54.62         10.0.0.4    
+
+12) We can get more detailed information about a specific virtual machine by name or ID running the vm show command:
+
+az vm show --resource-group learn-10267844-d8cd-43b4-bdb7-e52b85a19a78 --name SampleVM
+
+Note: Using JMESPath we can query the response JSON: v. https://jmespath.org/
+
+13) Stop a running VM:
+
+az vm stop \
+    --name SampleVM \
+    --resource-group learn-10267844-d8cd-43b4-bdb7-e52b85a19a78
+
+14) Install nginx Web server:
+
+sudo apt-get -y update && sudo apt-get -y install nginx
