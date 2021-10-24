@@ -1,0 +1,104 @@
+1) Declare a few helper variables:
+
+ADMIN_LOGIN="ServerAdmin"
+RESOURCE_GROUP=learn-673ea753-8955-456c-8a6d-f4466e555a27
+SERVERNAME=FitnessSQLServer-$RANDOM
+LOCATION=<location>
+PASSWORD=<password>
+
+
+2) Create a server named FitnessSQLServer-nnnn:
+
+az sql server create \
+--name $SERVERNAME \
+--resource-group $RESOURCE_GROUP \
+--location $LOCATION \
+--admin-user $ADMIN_LOGIN \
+--admin-password $PASSWORD
+
+
+3) Add a database named FitnessVancouverDB to FitnessSQLServer-nnnn:
+
+az sql db create \
+--resource-group $RESOURCE_GROUP \
+--server $SERVERNAME \
+--name FitnessVancouverDB
+
+
+4) Add a database named FitnessParisDB to FitnessSQLServer-nnnn:
+
+az sql db create \
+--resource-group $RESOURCE_GROUP \
+--server $SERVERNAME \
+--name FitnessParisDB
+
+
+5) Create a SQL Server Elastic Pool:
+
+az sql elastic-pool create -n FitnessSQLPool -g $RESOURCE_GROUP -s $SERVERNAME -e Basic
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

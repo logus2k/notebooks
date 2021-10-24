@@ -1,103 +1,29 @@
-Primary Key:
-wiyJoUPeG4+IXVTV8F2/h3RgieysrMnocY/Z9fJhXPr3jIFetKjYPQ/UKnUly5pJYrBeKH/m3N8wWpsjJcR9Tw==
+Azure Monitor is the monitoring service used to track availability, health, and performance of applications and infrastructure. It is a powerful reporting and analytics tool. Use it for insights into the behavior and running of your environment and applications. You can then respond proactively to faults in your system.
 
-DefaultEndpointsProtocol=https;EndpointSuffix=core.windows.net;AccountName=photostore31647;AccountKey=wiyJoUPeG4+IXVTV8F2/h3RgieysrMnocY/Z9fJhXPr3jIFetKjYPQ/UKnUly5pJYrBeKH/m3N8wWpsjJcR9Tw==
+You use Application Insights to:
 
-Primary blob endpoint:
-https://photostore31647.blob.core.windows.net/
-
-{
-    "ConnectionStrings": {
-        "StorageAccount": "DefaultEndpointsProtocol=https;EndpointSuffix=core.windows.net;AccountName=photostore31647;AccountKey=wiyJoUPeG4+IXVTV8F2/h3RgieysrMnocY/Z9fJhXPr3jIFetKjYPQ/UKnUly5pJYrBeKH/m3N8wWpsjJcR9Tw=="
-    }
-}
+- Analyze and address issues and problems that affect your application's health and performance.
+- Improve your application's development lifecycle.
+- Measure your user experience, and analyze users' behavior.
 
 
+Instrumenting your web pages with Application Insights collects usage information to augment the server-side monitoring capabilities.
 
-logus2k@Azure:~/PhotoSharingApp$ az storage account create \
->   --resource-group learn-af154f99-77b3-41fd-b09f-b40e8a3d2aca \
->   --location westeurope \
->   --sku Standard_LRS \
->   --name photostore$RANDOM
-{
-  "accessTier": "Hot",
-  "allowBlobPublicAccess": null,
-  "allowCrossTenantReplication": null,
-  "allowSharedKeyAccess": null,
-  "azureFilesIdentityBasedAuthentication": null,
-  "blobRestoreStatus": null,
-  "creationTime": "2021-10-07T11:27:39.495846+00:00",
-  "customDomain": null,
-  "enableHttpsTrafficOnly": true,
-  "enableNfsV3": null,
-  "encryption": {
-    "encryptionIdentity": null,
-    "keySource": "Microsoft.Storage",
-    "keyVaultProperties": null,
-    "requireInfrastructureEncryption": null,
-    "services": {
-      "blob": {
-        "enabled": true,
-        "keyType": "Account",
-        "lastEnabledTime": "2021-10-07T11:27:39.605213+00:00"
-      },
-      "file": {
-        "enabled": true,
-        "keyType": "Account",
-        "lastEnabledTime": "2021-10-07T11:27:39.605213+00:00"
-      },
-      "queue": null,
-      "table": null
-    }
-  },
-  "extendedLocation": null,
-  "failoverInProgress": null,
-  "geoReplicationStats": null,
-  "id": "/subscriptions/3dea82b3-b58e-4478-a9c9-ee2d973577a8/resourceGroups/learn-af154f99-77b3-41fd-b09f-b40e8a3d2aca/providers/Microsoft.Storage/storageAccounts/photostore31647",
-  "identity": null,
-  "isHnsEnabled": null,
-  "keyCreationTime": {
-    "key1": "2021-10-07T11:27:39.605213+00:00",
-    "key2": "2021-10-07T11:27:39.605213+00:00"
-  },
-  "keyPolicy": null,
-  "kind": "StorageV2",
-  "largeFileSharesState": null,
-  "lastGeoFailoverTime": null,
-  "location": "westeurope",
-  "minimumTlsVersion": null,
-  "name": "photostore31647",
-  "networkRuleSet": {
-    "bypass": "AzureServices",
-    "defaultAction": "Allow",
-    "ipRules": [],
-    "resourceAccessRules": null,
-    "virtualNetworkRules": []
-  },
-  "primaryEndpoints": {
-    "blob": "https://photostore31647.blob.core.windows.net/",
-    "dfs": "https://photostore31647.dfs.core.windows.net/",
-    "file": "https://photostore31647.file.core.windows.net/",
-    "internetEndpoints": null,
-    "microsoftEndpoints": null,
-    "queue": "https://photostore31647.queue.core.windows.net/",
-    "table": "https://photostore31647.table.core.windows.net/",
-    "web": "https://photostore31647.z6.web.core.windows.net/"
-  },
-  "primaryLocation": "westeurope",
-  "privateEndpointConnections": [],
-  "provisioningState": "Succeeded",
-  "resourceGroup": "learn-af154f99-77b3-41fd-b09f-b40e8a3d2aca",
-  "routingPreference": null,
-  "sasPolicy": null,
-  "secondaryEndpoints": null,
-  "secondaryLocation": null,
-  "sku": {
-    "name": "Standard_LRS",
-    "tier": "Standard"
-  },
-  "statusOfPrimary": "available",
-  "statusOfSecondary": null,
-  "tags": {},
-  "type": "Microsoft.Storage/storageAccounts"
-}
+Azure Network Watcher and Connection Monitor are services that can be used to measure network delay between various Azure and non-Azure end-points.
+
+
+You use Security Center to:
+
+- Understand the security posture of your architecture.
+- Identify and address risks and threats to your infrastructure.
+- Secure a complex infrastructure with traditional in-house skills and capital.
+- Secure an infrastructure that consists of on-premises and cloud resources.
+
+Security Center helps you respond to threats faster, and in an automated way by taking action. Actions include mitigating the threat, preventing future attacks, triggering an automated response with Logic Apps, or suppressing similar alerts.
+
+
+logus2ksqlservername
+logus2k
+Password123!
+
+
