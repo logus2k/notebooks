@@ -26,6 +26,10 @@ The Docker Store is an online cloud service where users can store and share thei
 # Assign a variable named $FORMAT that can be use for a prettier output of some docker commands
 export FORMAT="\nID\t{{.ID}}\nIMAGE\t{{.Image}}\nCOMMAND\t{{.Command}}\nCREATED\t{{.RunningFor}}\nSTATUS\t{{.Status}}\nPORTS\t{{.Ports}}\nNAMES\t{{.Names}}\n"
 
+# List all containers
+docker ps
+docker container ls
+
 # List all containers using $FORMAT
 docker ps --format $FORMAT
 

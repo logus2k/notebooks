@@ -21,9 +21,167 @@ You use Security Center to:
 
 Security Center helps you respond to threats faster, and in an automated way by taking action. Actions include mitigating the threat, preventing future attacks, triggering an automated response with Logic Apps, or suppressing similar alerts.
 
+Global distribution enables you to replicate data from one region into multiple Azure regions. You can add or remove regions in which your database is replicated at any time, and Azure Cosmos DB ensures that when you add an additional region, your data is available for operations within 30 minutes, assuming your data is 100 TBs or less.
 
-logus2ksqlservername
-logus2k
-Password123!
+When a database is replicated, the throughput and storage are replicated equally as well. So if your original database had 10GB of storage, and throughput of 1,000 RU/s, and if you replicated that to three additional regions, each region would have 10GB of data and 1,000 RU/s of throughput. Because the storage and throughput is replicated in each region, the cost of replicating to a region is the same as the original region, so replicating to 3 additional regions, would cost approximately four times the original non-replicated database.
+
+The benefits of multi-master support are:
+
+- Single-digit write latency – Multi-master accounts have an improved write latency of <10 ms for 99% of writes, up from <15 ms for non-multi-master accounts.
+- 99.999% read-write availability - The write availability multi-master accounts increases to 99.999%, up from the 99.99% for non-multi-master accounts.
+- Unlimited write scalability and throughput – With multi-master accounts, you can write to every region, providing unlimited write scalability and throughput to support billions of devices.
+- Built-in conflict resolution – Multi-master accounts have three methods for resolving conflicts to ensure global data integrity and consistency.
+
+
+https://escalator-functions-01905389.azurewebsites.net/api/HttpTrigger1?code=XCovXYwNPMjM6bafjW4t/Y9xr8UeGZgWocPolmtOUZXSqnauZQvd/g==
+
+XCovXYwNPMjM6bafjW4t/Y9xr8UeGZgWocPolmtOUZXSqnauZQvd/g==
+
+
+curl --header "Content-Type: application/json" --header "x-functions-key: XCovXYwNPMjM6bafjW4t/Y9xr8UeGZgWocPolmtOUZXSqnauZQvd/g==" --request POST --data "{\"name\": \"Azure Function\"}" https://escalator-functions-01905389.azurewebsites.net/api/HttpTrigger1?code=XCovXYwNPMjM6bafjW4t/Y9xr8UeGZgWocPolmtOUZXSqnauZQvd/g==
+
+
+List Azure role assignments using Azure CLI:
+https://docs.microsoft.com/en-us/azure/role-based-access-control/role-assignments-list-cli
+
+
+# Use Service Bus topics if you:
+
+* Need multiple receivers to handle each message
+* Use Service Bus queues if you:
+* Need an At-Most-Once delivery guarantee.
+* Need a FIFO guarantee.
+* Need to group messages into transactions.
+* Want to receive messages without polling the queue.
+* Need to provide a role-based access model to the queues.
+* Need to handle messages larger than 64 KB but less than 256 KB.
+* Queue size will not grow larger than 80 GB.
+* Want to publish and consume batches of messages.
+
+
+# Azure Queue Storage
+
+A message in a queue is a byte array of up to 64 KB. Message contents are not interpreted at all by any Azure component.
+
+A single queue can be up to 500 TB in size, so it can potentially store millions of messages. The target throughput for a single queue is 2000 messages per second, allowing it to handle high-volume scenarios.
+
+While the total queue size can be up to 500 TB, the individual messages in it can only be up to 64 KB in size (48 KB when using Base64 encoding). If you need a larger payload you can combine queues and blobs – passing the URL to the actual data (stored as a Blob) in the message. This approach would allow you to enqueue up to 200 GB for a single item.
+
+The performance tier determines how your messages are stored: Standard uses magnetic drives while Premium uses solid-state drives. Choose Standard if you expect peaks in demand to be short. Consider Premium if queue length sometimes becomes long and you need to minimize the time to access messages.
+
+Use Queue storage if you:
+
+* Need an audit trail of all messages that pass through the queue.
+* Expect the queue to exceed 80 GB in size.
+* Want to track progress for processing a message inside of the queue.
+
+
+# Azure Event Grid
+
+Use Event Grid when you need these features:
+
+* Simplicity: It is straightforward to connect sources to subscribers in Event Grid.
+* Advanced filtering: Subscriptions have close control over the events they receive from a topic.
+* Fan-out: You can subscribe to an unlimited number of endpoints to the same events and topics.
+* Reliability: Event Grid retries event delivery for up to 24 hours for each subscription.
+* Pay-per-event: Pay only for the number of events that you transmit.
+
+
+# Event Hubs
+
+Event Hubs lets you build a big data pipeline capable of processing millions of events per second with low latency. It can handle data from concurrent sources and route it to a variety of stream-processing infrastructures and analytics services. It enables real-time processing and supports repeated replay of stored raw data.
+
+Event publishers are any app or device that can send out events using either HTTPS or Advanced Message Queuing Protocol (AMQP) 1.0.
+
+An event is a small packet of information (a datagram) that contains a notification. Events can be published individually or in batches, but a single publication (individual or batch) can't exceed 1 MB.
+
+Choose Event Hubs if:
+
+* You need to support authenticating a large number of publishers.
+* You need to save a stream of events to Data Lake or Blob storage.
+* You need aggregation or analytics on your event stream.
+* You need reliable messaging or resiliency.
+
+
+
+# Service Bus queues and storage queues
+
+There are two Azure features that include message queues: Service Bus and Azure Storage accounts. As a general guide, storage queues are simpler to use but are less sophisticated and flexible than Service Bus queues.
+
+Key advantages of Service Bus queues include:
+
+* Supports larger messages sizes of 256 KB (standard tier) or 1MB (premium tier) per message versus 64 KB
+* Supports both at-most-once and at-least-once delivery - choose between a very small chance that a message is lost or a very small chance it is handled twice
+* Guarantees first-in-first-out (FIFO) order - messages are handled in the same order they are added (although FIFO is the normal operation of a queue, it is not guaranteed for every message)
+* Can group multiple messages into a transaction - if one message in the transaction fails to be delivered, all messages in the transaction will not be delivered
+* Supports role-based security
+* Does not require destination components to continuously poll the queue
+
+Advantages of storage queues:
+
+* Supports unlimited queue size (versus 80-GB limit for Service Bus queues)
+* Maintains a log of all messages
+
+Consider the following questions:
+
+* Is the communication an event? If so, consider using Event Grid or Event Hubs.
+* Should a single message be delivered to more than one destination? If so, use a Service Bus topic. Otherwise, use a queue.
+
+If you decide that you need a queue:
+
+Choose Service Bus queues if:
+
+* You need an at-most-once delivery guarantee
+* You need a FIFO guarantee
+* You need to group messages into transactions
+* You want to receive messages without polling the queue
+* You need to provide role-based access to the queues
+* You need to handle messages larger than 64 KB but smaller than 256 KB
+* Your queue size will not grow larger than 80 GB
+* You would like to be able to publish and consume batches of messages
+
+Choose queue storage if:
+
+* You need a simple queue with no particular additional requirements
+* You need an audit trail of all messages that pass through the queue
+* You expect the queue to exceed 80 GB in size
+* You want to track progress for processing a message inside of the queue
+
+Event Grid is designed for events, which notify recipients only of an event and do not contain the raw data associated with that event. Azure Event Hubs is designed for high-flow analytics types of events. Azure Service Bus and storage queues are for messages, which can be used for binding the core pieces of any application workflow.
+
+If your requirements are simple, if you want to send each message to only one destination, or if you want to write code as quickly as possible, a storage queue may be the best option. Otherwise, Service Bus queues provide many more options and flexibility.
+
+If you want to send messages to multiple subscribers, use a Service Bus topic.
+
+
+# Event Grid
+
+Capabilities:
+
+Event Grid doesn't require provisioning or managing. It's native to Azure, with the ability to be extended and customized. Some of the main advantages are:
+
+* It's simple. Point and click in the Azure portal to add and collect your events from Azure resources.
+* It can filter events. Filter events so that handlers receive only relevant events.
+* It supports multiple subscribers. Attach multiple handlers to a single event from a single source.
+* It's reliable. Take advantage of 24-hour retries to ensure events are delivered.
+* Its throughput is high. Handle a high volume of events, in the range of millions per second.
+* It has built-in events. Use built-in events to get started quickly and easily.
+* It supports custom events. Use Event Grid to reliably deliver events for your custom components.
+
+
+# Azure Relay
+
+Use Hybrid Cloud and On-Premises Connectivity to:
+
+* Secure connectivity without VPN
+* Keep your data where you want
+* Appliance free network load balancing
+* Flexible communication options including one way and duplex
+* Build solutions that work with existing networks
+* Leverage existing on-premises services
+* Secure with no firewall changes
+
+
+
 
 
