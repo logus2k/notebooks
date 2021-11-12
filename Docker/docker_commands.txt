@@ -167,8 +167,8 @@ docker pull wurstmeister/kafka
 # Create a new image tag
 docker tag ubuntu-with-nc ubuntu-nc
 
-# Run a .docker file to create a new image and deploy it in the local docker registry
-# NOTE: The . refers to the directory where the .dcoker file can be found
+# Execute a .Dockerfile to create a new image and deploy it in the local docker registry
+# NOTE: The . refers to the directory where the .Dockerfile can be found
 docker build -t image_name .
 
 # Provide a container direct access to the host network, by turning off the protection that controls the network access

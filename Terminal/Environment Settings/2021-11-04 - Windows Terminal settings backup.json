@@ -1,0 +1,666 @@
+{
+    "$schema": "https://aka.ms/terminal-profiles-schema",
+    "actions": 
+    [
+        {
+            "command": 
+            {
+                "action": "copy",
+                "singleLine": false
+            },
+            "keys": "ctrl+c"
+        },
+        {
+            "command": "find",
+            "keys": "ctrl+shift+f"
+        },
+        {
+            "command": "paste",
+            "keys": "ctrl+v"
+        },
+        {
+            "command": 
+            {
+                "action": "splitPane",
+                "split": "auto",
+                "splitMode": "duplicate"
+            },
+            "keys": "alt+shift+d"
+        }
+    ],
+    "copyFormatting": "none",
+    "copyOnSelect": false,
+    "defaultProfile": "{07b52e3e-de2c-5db4-bd2d-ba144ed6c273}",
+    "profiles": 
+    {
+        "defaults": 
+        {
+            "cursorShape": "underscore",
+            "unfocusedAppearance": {"backgroundImageOpacity": 1},
+            "font": 
+            {
+                "size": 11
+            }
+        },
+        "list": 
+        [
+            {
+                "guid": "{07b52e3e-de2c-5db4-bd2d-ba144ed6c273}",
+                "acrylicOpacity": 0.80,
+                "backgroundImage": "C:\\Personal\\Terminal\\Deep Field 4.jpg",
+                "backgroundImageOpacity": 0.35,
+                "bellStyle": 
+                [
+                    "window",
+                    "taskbar"
+                ],
+                "colorScheme": "Space",
+                "cursorShape": "underscore",
+                "experimental.retroTerminalEffect": false,
+                "font": 
+                {
+                    "face": "MesloLGS NF",
+                    "size": 10,
+                    "weight": "normal"
+                },
+                "hidden": false,
+                "historySize": 9001,
+                "name": "Ubuntu 20.04.03 LTS",
+                "scrollbarState": "visible",
+                "snapOnInput": true,
+                "source": "Windows.Terminal.Wsl",
+                "startingDirectory": "C:\\Labs\\Git",
+                "suppressApplicationTitle": true,
+                "tabTitle": "Ubuntu",
+                "useAcrylic": false
+            },
+            {
+                "guid": "{574e775e-4f2a-5b96-ac1e-a2962a402336}",
+                "antialiasingMode": "grayscale",
+                "backgroundImage": "C:\\Personal\\Terminal\\Earth Night.jpg",
+                "backgroundImageOpacity": 0.30,
+                "backgroundImageStretchMode": "uniformToFill",
+                "bellStyle": 
+                [
+                    "window",
+                    "taskbar"
+                ],
+                "colorScheme": "Campbell",
+                "commandline": "pwsh.exe -nologo",
+                "cursorShape": "underscore",
+                "font": 
+                {
+                    "face": "Consolas",
+                    "size": 11,
+                    "weight": "light"
+                },
+                "hidden": false,
+                "historySize": 9001,
+                "name": "PowerShell Core 7.1.5",
+                "scrollbarState": "visible",
+                "snapOnInput": true,
+                "source": "Windows.Terminal.PowershellCore",
+                "startingDirectory": "C:/Labs/Git",
+                "suppressApplicationTitle": true,
+                "tabTitle": "PowerShell Core",
+                "useAcrylic": false
+            },
+            {
+                "guid": "{3c2032f8-522f-4be3-aad5-575f63528d0b}",
+                "backgroundImage": "C:/Personal/Terminal/Hubble.jpg",
+                "backgroundImageOpacity": 0.5,
+                "bellStyle": 
+                [
+                    "window",
+                    "taskbar"
+                ],
+                "commandline": "C:\\Program Files\\Python39\\Scripts\\ipython.exe",
+                "cursorShape": "underscore",
+                "experimental.retroTerminalEffect": false,
+                "font": 
+                {
+                    "face": "Consolas",
+                    "size": 11,
+                    "weight": "light"
+                },
+                "foreground": "#B9B375",
+                "hidden": false,
+                "historySize": 9001,
+                "icon": "C:\\Personal\\Terminal\\ipython3.png",
+                "name": "IPython 7.25.0",
+                "scrollbarState": "visible",
+                "snapOnInput": true,
+                "startingDirectory": "C:/Labs/Git",
+                "suppressApplicationTitle": true,
+                "tabTitle": "IPython",
+                "useAcrylic": false
+            },
+            {
+                "guid": "{1f291718-81a4-4929-91ec-e7f65b8a0ee3}",
+                "backgroundImage": "C:\\Personal\\Terminal\\Lion 2.jpg",
+                "backgroundImageOpacity": 0.30,
+                "bellStyle": "none",
+                "commandline": "dotnet script",
+                "cursorShape": "underscore",
+                "font": 
+                {
+                    "face": "Consolas",
+                    "size": 11,
+                    "weight": "light"
+                },
+                "icon": "C:\\Personal\\Terminal\\net_core.png",
+                "name": "C# .NET Core 5.0.11",
+                "startingDirectory": "C:\\Labs\\Git",
+                "tabTitle": "C#"
+            },            
+            {
+                "guid": "{d1043838-db1b-4e92-996e-0026f82af697}",
+                "backgroundImage": "C:\\Personal\\Terminal\\Hubble 3.jpg",
+                "backgroundImageAlignment": "center",
+                "backgroundImageOpacity": 0.35,
+                "bellStyle": "none",
+                "commandline": "C:\\Program Files\\Python39\\Scripts\\radian.exe",
+                "cursorShape": "underscore",
+                "font": 
+                {
+                    "face": "Consolas",
+                    "size": 11
+                },
+                "icon": "C:\\Personal\\Terminal\\radian.png",
+                "name": "Radian 0.5.11",
+                "startingDirectory": "C:\\Labs\\Git",
+                "tabTitle": "Radian"
+            },
+            {
+                "guid": "{fd8ccdea-628a-40c6-ab44-c8dd0bbbf689}",
+                "backgroundImage": "C:/Personal/Terminal/Deep Field 4.jpg",
+                "backgroundImageOpacity": 0.30,
+                "bellStyle": 
+                [
+                    "window",
+                    "taskbar"
+                ],
+                "commandline": "C:\\Program Files\\GNU Octave\\Octave-6.3.0\\mingw64\\bin\\octave.bat",
+                "cursorShape": "underscore",
+                "font": 
+                {
+                    "face": "Consolas",
+                    "size": 11
+                },
+                "foreground": "#3C9948",
+                "hidden": false,
+                "historySize": 9001,
+                "icon": "C:/Personal/Terminal/octave.png",
+                "name": "Octave 6.3.0",
+                "scrollbarState": "visible",
+                "snapOnInput": true,
+                "startingDirectory": "C:/Labs/Git",
+                "suppressApplicationTitle": true,
+                "tabTitle": "Octave",
+                "useAcrylic": false
+            },
+            {
+                "guid": "{42e46fa2-f8ce-45f1-a237-ca6f4074c3f9}",
+                "backgroundImage": "C:/Personal/Terminal/Earth 2.jpg",
+                "backgroundImageOpacity": 0.25,
+                "bellStyle": 
+                [
+                    "window",
+                    "taskbar"
+                ],
+                "commandline": "C:\\Program Files\\Julia-1.6.3\\bin\\julia.exe",
+                "cursorShape": "underscore",
+                "font": 
+                {
+                    "face": "Consolas",
+                    "size": 11
+                },
+                "foreground": "#4DA704",
+                "hidden": false,
+                "historySize": 9001,
+                "icon": "C:/Personal/Terminal/julia.png",
+                "name": "Julia 1.6.3",
+                "scrollbarState": "visible",
+                "snapOnInput": true,
+                "startingDirectory": "C:/Labs/Git",
+                "suppressApplicationTitle": true,
+                "tabTitle": "Julia",
+                "useAcrylic": false
+            },
+            {
+                "guid": "{540b7956-5b0f-416b-b51b-6ca573c5d230}",
+                "acrylicOpacity": 1.0,
+                "antialiasingMode": "grayscale",
+                "backgroundImage": "C:\\Personal\\Terminal\\Elephants1.jpg",
+                "backgroundImageOpacity": 0.25,
+                "colorScheme": "Campbell",
+                "commandline": "docker exec -it Postgres psql -U postgres -W ",
+                "cursorShape": "underscore",
+                "font": 
+                {
+                    "face": "Consolas",
+                    "size": 11
+                },
+                "icon": "C:\\Personal\\Terminal\\postgresql.png",
+                "name": "PostgreSQL 12.3",
+                "tabTitle": "PostgreSQL",
+                "useAcrylic": false
+            },
+            {
+                "guid": "{b453ae62-4e3d-5e58-b989-0a998ec441b8}",
+                "font": 
+                {
+                    "size": 11
+                },
+                "hidden": false,
+                "name": "Azure Cloud Shell 2.23.0",
+                "source": "Windows.Terminal.Azure"
+            },
+            {
+                "guid": "{32e46fa2-f8ce-44f1-a237-ca6f4074c3f9}",
+                "altGrAliasing": true,
+                "backgroundImage": "C:\\Personal\\Terminal\\galaxy-wallpapers-35.jpg",
+                "backgroundImageAlignment": "center",
+                "backgroundImageOpacity": 0.25,
+                "backgroundImageStretchMode": "uniformToFill",
+                "bellStyle": 
+                [
+                    "window",
+                    "taskbar"
+                ],
+                "commandline": "C:\\Program Files\\Python39\\python.exe",
+                "cursorShape": "underscore",
+                "font": 
+                {
+                    "face": "Consolas",
+                    "size": 11
+                },
+                "foreground": "#4DA704",
+                "hidden": false,
+                "historySize": 9001,
+                "icon": "C:\\Personal\\Terminal\\python.png",
+                "name": "Python 3.9.6",
+                "scrollbarState": "visible",
+                "snapOnInput": true,
+                "startingDirectory": "C:\\Labs\\Git",
+                "suppressApplicationTitle": true,
+                "tabTitle": "Python",
+                "useAcrylic": false
+            },
+            {
+                "guid": "{0f5cc1b2-879b-4ce6-ae0c-f56b3e550132}",
+                "acrylicOpacity": 1.0,
+                "backgroundImage": "C:\\Personal\\Terminal\\Earth View 5.jpg",
+                "backgroundImageOpacity": 0.5,
+                "bellStyle": 
+                [
+                    "window",
+                    "taskbar"
+                ],
+                "colorScheme": "Campbell",
+                "commandline": "C:\\Program Files\\R\\R-4.1.1\\bin\\R.exe",
+                "cursorShape": "underscore",
+                "experimental.retroTerminalEffect": false,
+                "font": 
+                {
+                    "face": "Consolas",
+                    "size": 11
+                },
+                "foreground": "#B9B375",
+                "hidden": false,
+                "historySize": 9001,
+                "icon": "C:\\Personal\\Terminal\\R.png",
+                "name": "R 4.1.1",
+                "scrollbarState": "hidden",
+                "snapOnInput": true,
+                "startingDirectory": "C:\\Labs\\Git\\R",
+                "suppressApplicationTitle": true,
+                "tabTitle": "R",
+                "useAcrylic": false
+            },
+            {
+                "guid": "{22882c25-9d37-48c0-bf4c-f7fa493e1a24}",
+                "backgroundImage": "C:\\Personal\\Terminal\\Kepler 2.jpg",
+                "backgroundImageOpacity": 0.15,
+                "bellStyle": "none",
+                "commandline": "dotnet fsi",
+                "cursorShape": "underscore",
+                "font": 
+                {
+                    "face": "Consolas",
+                    "size": 11
+                },
+                "icon": "C:\\Personal\\Terminal\\net_core.png",
+                "name": "F# Interactive 11.4.2.0 for F# 5.0",
+                "startingDirectory": "C:\\Labs\\Git",
+                "tabTitle": "F#"
+            },
+            {
+                "guid": "{8e96fd28-0446-400e-a61d-b2b49c1fd5d6}",
+                "altGrAliasing": true,
+                "backgroundImage": "C:\\Personal\\Terminal\\Space001.jpg",
+                "backgroundImageAlignment": "center",
+                "backgroundImageOpacity": 0.30,
+                "backgroundImageStretchMode": "uniformToFill",
+                "bellStyle": 
+                [
+                    "window",
+                    "taskbar"
+                ],
+                "commandline": "C:\\Program Files\\nodejs\\node.exe",
+                "cursorShape": "underscore",
+                "font": 
+                {
+                    "face": "Consolas",
+                    "size": 11
+                },
+                "foreground": "#4DA704",
+                "hidden": false,
+                "historySize": 9001,
+                "icon": "C:\\Personal\\Terminal\\nodejs.png",
+                "name": "Node v14.17.3",
+                "scrollbarState": "visible",
+                "snapOnInput": true,
+                "startingDirectory": "C:\\Labs\\Git",
+                "suppressApplicationTitle": true,
+                "tabTitle": "Node",
+                "useAcrylic": false
+            },
+            {
+                "guid": "{0caa0dad-35be-5f56-a8ff-afceeeaa6101}",
+                "backgroundImage": "C:/Personal/Terminal/Galaxy.jpg",
+                "backgroundImageOpacity": 0.15,
+                "bellStyle": 
+                [
+                    "window",
+                    "taskbar"
+                ],
+                "commandline": "cmd.exe",
+                "cursorShape": "underscore",
+                "font": 
+                {
+                    "face": "Consolas",
+                    "size": 11
+                },
+                "foreground": "#BBA26D",
+                "hidden": false,
+                "name": "Windows 10 Command Prompt",
+                "scrollbarState": "visible",
+                "snapOnInput": true,
+                "startingDirectory": "C:/Labs/Git",
+                "tabTitle": "Command Prompt",
+                "useAcrylic": false
+            },
+            {
+                "guid": "{63e31163-583f-5850-9c1e-24e227dd2da9}",
+                "cursorShape": "underscore",
+                "font": 
+                {
+                    "face": "Consolas",
+                    "size": 11
+                },
+                "hidden": false,
+                "name": "PowerShell (dotnet global)",
+                "source": "Windows.Terminal.PowershellCore"
+            }
+        ]
+    },
+    "schemes": 
+    [
+        {
+            "background": "#0C0C0C",
+            "black": "#0C0C0C",
+            "blue": "#0037DA",
+            "brightBlack": "#767676",
+            "brightBlue": "#3B78FF",
+            "brightCyan": "#61D6D6",
+            "brightGreen": "#16C60C",
+            "brightPurple": "#B4009E",
+            "brightRed": "#E74856",
+            "brightWhite": "#F2F2F2",
+            "brightYellow": "#F9F1A5",
+            "cursorColor": "#FFFFFF",
+            "cyan": "#3A96DD",
+            "foreground": "#CCCCCC",
+            "green": "#13A10E",
+            "name": "Campbell",
+            "purple": "#881798",
+            "red": "#C50F1F",
+            "selectionBackground": "#FFFFFF",
+            "white": "#CCCCCC",
+            "yellow": "#C19C00"
+        },
+        {
+            "background": "#012456",
+            "black": "#0C0C0C",
+            "blue": "#0037DA",
+            "brightBlack": "#767676",
+            "brightBlue": "#3B78FF",
+            "brightCyan": "#61D6D6",
+            "brightGreen": "#16C60C",
+            "brightPurple": "#B4009E",
+            "brightRed": "#E74856",
+            "brightWhite": "#F2F2F2",
+            "brightYellow": "#F9F1A5",
+            "cursorColor": "#FFFFFF",
+            "cyan": "#3A96DD",
+            "foreground": "#CCCCCC",
+            "green": "#13A10E",
+            "name": "Campbell Powershell",
+            "purple": "#881798",
+            "red": "#C50F1F",
+            "selectionBackground": "#FFFFFF",
+            "white": "#CCCCCC",
+            "yellow": "#C19C00"
+        },
+        {
+            "background": "#282C34",
+            "black": "#282C34",
+            "blue": "#61AFEF",
+            "brightBlack": "#5A6374",
+            "brightBlue": "#61AFEF",
+            "brightCyan": "#56B6C2",
+            "brightGreen": "#98C379",
+            "brightPurple": "#C678DD",
+            "brightRed": "#E06C75",
+            "brightWhite": "#DCDFE4",
+            "brightYellow": "#E5C07B",
+            "cursorColor": "#FFFFFF",
+            "cyan": "#56B6C2",
+            "foreground": "#DCDFE4",
+            "green": "#98C379",
+            "name": "One Half Dark",
+            "purple": "#C678DD",
+            "red": "#E06C75",
+            "selectionBackground": "#FFFFFF",
+            "white": "#DCDFE4",
+            "yellow": "#E5C07B"
+        },
+        {
+            "background": "#FAFAFA",
+            "black": "#383A42",
+            "blue": "#0184BC",
+            "brightBlack": "#4F525D",
+            "brightBlue": "#61AFEF",
+            "brightCyan": "#56B5C1",
+            "brightGreen": "#98C379",
+            "brightPurple": "#C577DD",
+            "brightRed": "#DF6C75",
+            "brightWhite": "#FFFFFF",
+            "brightYellow": "#E4C07A",
+            "cursorColor": "#4F525D",
+            "cyan": "#0997B3",
+            "foreground": "#383A42",
+            "green": "#50A14F",
+            "name": "One Half Light",
+            "purple": "#A626A4",
+            "red": "#E45649",
+            "selectionBackground": "#FFFFFF",
+            "white": "#FAFAFA",
+            "yellow": "#C18301"
+        },
+        {
+            "background": "#000000",
+            "black": "#17384C",
+            "blue": "#027C9B",
+            "brightBlack": "#434B53",
+            "brightBlue": "#1BBCDD",
+            "brightCyan": "#87ACB4",
+            "brightGreen": "#628D98",
+            "brightPurple": "#BBE3EE",
+            "brightRed": "#D48678",
+            "brightWhite": "#FEE4CE",
+            "brightYellow": "#FDD39F",
+            "cursorColor": "#FFFFFF",
+            "cyan": "#50A3B5",
+            "foreground": "#A2A9AD",
+            "green": "#13A10E",
+            "name": "SeaShells",
+            "purple": "#68D4F1",
+            "red": "#D15123",
+            "selectionBackground": "#FFFFFF",
+            "white": "#DEB88D",
+            "yellow": "#FCA02F"
+        },
+        {
+            "background": "#002B36",
+            "black": "#002B36",
+            "blue": "#268BD2",
+            "brightBlack": "#073642",
+            "brightBlue": "#839496",
+            "brightCyan": "#93A1A1",
+            "brightGreen": "#586E75",
+            "brightPurple": "#6C71C4",
+            "brightRed": "#CB4B16",
+            "brightWhite": "#FDF6E3",
+            "brightYellow": "#657B83",
+            "cursorColor": "#FFFFFF",
+            "cyan": "#2AA198",
+            "foreground": "#839496",
+            "green": "#859900",
+            "name": "Solarized Dark",
+            "purple": "#D33682",
+            "red": "#DC322F",
+            "selectionBackground": "#FFFFFF",
+            "white": "#EEE8D5",
+            "yellow": "#B58900"
+        },
+        {
+            "background": "#FDF6E3",
+            "black": "#002B36",
+            "blue": "#268BD2",
+            "brightBlack": "#073642",
+            "brightBlue": "#839496",
+            "brightCyan": "#93A1A1",
+            "brightGreen": "#586E75",
+            "brightPurple": "#6C71C4",
+            "brightRed": "#CB4B16",
+            "brightWhite": "#FDF6E3",
+            "brightYellow": "#657B83",
+            "cursorColor": "#002B36",
+            "cyan": "#2AA198",
+            "foreground": "#657B83",
+            "green": "#859900",
+            "name": "Solarized Light",
+            "purple": "#D33682",
+            "red": "#DC322F",
+            "selectionBackground": "#FFFFFF",
+            "white": "#EEE8D5",
+            "yellow": "#B58900"
+        },
+        {
+            "background": "#000000",
+            "black": "#000000",
+            "blue": "#0037DA",
+            "brightBlack": "#809ECC",
+            "brightBlue": "#3B78FF",
+            "brightCyan": "#61D6D6",
+            "brightGreen": "#16C60C",
+            "brightPurple": "#B4009E",
+            "brightRed": "#A02C35",
+            "brightWhite": "#586475",
+            "brightYellow": "#DAD49F",
+            "cursorColor": "#FFFFFF",
+            "cyan": "#78A7CC",
+            "foreground": "#A2A9AD",
+            "green": "#56AA53",
+            "name": "Space",
+            "purple": "#881798",
+            "red": "#8D343B",
+            "selectionBackground": "#FFFFFF",
+            "white": "#6688A3",
+            "yellow": "#CAA71B"
+        },
+        {
+            "background": "#000000",
+            "black": "#000000",
+            "blue": "#3465A4",
+            "brightBlack": "#555753",
+            "brightBlue": "#729FCF",
+            "brightCyan": "#34E2E2",
+            "brightGreen": "#8AE234",
+            "brightPurple": "#AD7FA8",
+            "brightRed": "#EF2929",
+            "brightWhite": "#EEEEEC",
+            "brightYellow": "#FCE94F",
+            "cursorColor": "#FFFFFF",
+            "cyan": "#06989A",
+            "foreground": "#D3D7CF",
+            "green": "#4E9A06",
+            "name": "Tango Dark",
+            "purple": "#75507B",
+            "red": "#CC0000",
+            "selectionBackground": "#FFFFFF",
+            "white": "#D3D7CF",
+            "yellow": "#C4A000"
+        },
+        {
+            "background": "#FFFFFF",
+            "black": "#000000",
+            "blue": "#3465A4",
+            "brightBlack": "#555753",
+            "brightBlue": "#729FCF",
+            "brightCyan": "#34E2E2",
+            "brightGreen": "#8AE234",
+            "brightPurple": "#AD7FA8",
+            "brightRed": "#EF2929",
+            "brightWhite": "#EEEEEC",
+            "brightYellow": "#FCE94F",
+            "cursorColor": "#000000",
+            "cyan": "#06989A",
+            "foreground": "#555753",
+            "green": "#4E9A06",
+            "name": "Tango Light",
+            "purple": "#75507B",
+            "red": "#CC0000",
+            "selectionBackground": "#FFFFFF",
+            "white": "#D3D7CF",
+            "yellow": "#C4A000"
+        },
+        {
+            "background": "#000000",
+            "black": "#000000",
+            "blue": "#000080",
+            "brightBlack": "#808080",
+            "brightBlue": "#0000FF",
+            "brightCyan": "#00FFFF",
+            "brightGreen": "#00FF00",
+            "brightPurple": "#FF00FF",
+            "brightRed": "#FF0000",
+            "brightWhite": "#FFFFFF",
+            "brightYellow": "#FFFF00",
+            "cursorColor": "#FFFFFF",
+            "cyan": "#008080",
+            "foreground": "#C0C0C0",
+            "green": "#008000",
+            "name": "Vintage",
+            "purple": "#800080",
+            "red": "#800000",
+            "selectionBackground": "#FFFFFF",
+            "white": "#C0C0C0",
+            "yellow": "#808000"
+        }
+    ],
+    "tabWidthMode": "titleLength",
+    "theme": "dark"
+}

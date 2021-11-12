@@ -1,0 +1,2 @@
+options(radian.prompt = "\033[0;36mR$>\033[0m ")
+options(radian.color_scheme = "fruity")

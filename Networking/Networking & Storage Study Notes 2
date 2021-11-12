@@ -182,6 +182,28 @@ Use Hybrid Cloud and On-Premises Connectivity to:
 * Secure with no firewall changes
 
 
+https://myignite.microsoft.com/learning-zone
+
+https://docs.microsoft.com/en-us/learn/challenges?id=10d2f838-16b2-4c16-ba6d-bc85422e43c7
+
+https://docs.microsoft.com/en-us/users/cloudskillschallenge/collections/8pm3fxd3kyjo?WT.mc_id=cloudskillschallenge_10d2f838-16b2-4c16-ba6d-bc85422e43c7
+
+
+# Recovery time objective
+
+An RTO is a measure of the maximum amount of time your business can survive after a disaster until normal service must be restored in order to avoid unacceptable consequences associated with a break in continuity. Let's assume your RTO is 12 hours, which means that operations can continue for 12 hours without the business's core services functioning. If the downtime is any longer, your business would be seriously harmed.
+
+# Recovery point objective
+
+An RPO is a measure of the maximum amount of data loss that's acceptable after a disaster. A business may typically decide to do a backup every 24 hours, 12 hours, or even in real time. If a disaster occurs, there's always some data loss.
+
+For example, if your backup occurred at midnight every 24 hours, and a disaster happened at 9:00 AM, then nine hours of data would be lost. If your company's RPO was 12 hours, it would be okay because only nine hours passed. If the RPO was four hours, there would be a problem and damage would occur to the business.
+
+
+
+
+
+
 
 
 

@@ -1,0 +1,165 @@
+{
+    "telemetry.enableTelemetry": false,
+    "telemetry.enableCrashReporter": false,
+    "editor.suggestSelection": "first",
+    "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
+    "editor.largeFileOptimizations": false,
+    "workbench.settings.enableNaturalLanguageSearch": false,
+    "dotnetAcquisitionExtension.enableTelemetry": false,
+    "omnisharp.enableRoslynAnalyzers": true,
+    "editor.renderControlCharacters": true,
+    "workbench.startupEditor": "newUntitledFile",
+    "editor.wordWrap": "on",
+    "gitlens.views.repositories.files.layout": "list",
+    "files.autoSave": "off",
+    "workbench.iconTheme": "vscode-icons",
+    "editor.fontFamily": "Consolas",
+    "editor.fontLigatures": false,
+    "editor.fontWeight": "normal",
+    "editor.fontSize": 14,
+    "editor.tokenColorCustomizations": {
+        "keywords": {
+            "foreground": "#cfa86d",
+        },
+        "functions": {
+            "foreground": "#7194bd",
+        },
+        "comments": {
+            "foreground": "#797878",
+            "fontStyle": "italic",
+        },
+        "strings": {
+            "foreground": "#a19678",
+        },
+        "types": {
+            "foreground": "#c77cb4"
+        },
+        "numbers": "#ce8181",
+        "variables": {
+            "foreground": "#c5c2b8",
+        },
+        "textMateRules": [
+            {
+                "scope": "meta.function-call",
+                "settings": {
+                    "foreground": "#6cac73",
+                }
+            }
+        ]
+    },
+    "editor.rulers": [
+        {
+            "column": 119,
+            "color": "#212F3D",
+        }
+    ],
+    "[git-commit]": {
+        "editor.rulers": [50],
+        },
+    "[python]": {
+
+        "editor.rulers": [
+        {
+            "column": 72,
+            "color": "#4C3B12",
+        },
+        {
+            "column": 79,
+            "color": "#4E150E",
+        },
+        {
+            "column": 119,
+            "color": "#212F3D",
+        }
+        ]
+    },
+    "python.linting.flake8Path": "C:\\Users\\logus\\AppData\\Roaming\\Python\\Python38\\Scripts\\flake8.exe",
+    "workbench.colorCustomizations": {
+        "editor.background": "#111010",
+        "sideBar.background": "#171719"
+    },
+    "editor.cursorStyle": "line-thin",
+    "python.linting.pylintEnabled": false,
+    "python.analysis.typeCheckingMode": "basic",
+    "python.linting.pycodestylePath": "C:\\Users\\logus\\AppData\\Roaming\\Python\\Python38\\Scripts\\pycodestyle.exe",
+    "python.linting.enabled": true,
+    "python.analysis.autoSearchPaths": false,
+    "pythonTestExplorer.testFramework": "pytest",
+    "go.formatTool": "goimports",
+    "python.linting.pycodestyleEnabled": true,
+    "timeline.excludeSources": [],
+    "python.showStartPage": false,
+    "FSharp.useSdkScripts": true,
+    "php.validate.executablePath": "C:\\Program Files\\PHP\\php.exe",
+    "vs-kubernetes": {
+        "vs-kubernetes.helm-path.windows": "C:\\Users\\logus\\.vs-kubernetes\\tools\\helm\\windows-amd64\\helm.exe",
+        "vs-kubernetes.minikube-path.windows": "C:\\Users\\logus\\.vs-kubernetes\\tools\\minikube\\windows-amd64\\minikube.exe",
+        "vs-kubernetes.draft-path.windows": "C:\\Users\\logus\\.vs-kubernetes\\tools\\draft\\windows-amd64\\draft.exe",
+        "vscode-kubernetes.minikube-path.windows": "C:\\Users\\logus\\.vs-kubernetes\\tools\\minikube\\windows-amd64\\minikube.exe"
+    },
+    "omnisharp.path": "latest",
+    "rest-client.enableTelemetry": false,
+    "gitlens.advanced.telemetry.enabled": false,
+    "mdb.sendTelemetry": false,
+    "python.analysis.extraPaths": [],
+    "workbench.editorAssociations": {
+        "*.m": "default",
+        "*.png": "hexEditor.hexedit",
+        "*.ipynb": "jupyter.notebook.ipynb"
+    },
+    "erlang.linting": false,
+    "erlang.eep48Help": false,
+    "files.watcherExclude": {
+        "**/.bloop": true,
+        "**/.metals": true,
+        "**/.ammonite": true
+    },
+    "python.pythonPath": "C:\\Program Files\\Python38\\python.exe",
+    "jupyter.askForKernelRestart": false,
+    "jupyter.sendSelectionToInteractiveWindow": false,
+    "jupyter.searchForJupyter": false,
+    "files.associations": {
+        "*.m": "octave",
+        "*.rmd": "markdown"
+    },
+    "workbench.enableExperiments": false,
+    "jupyter.interactiveWindowMode": "perFile",
+    "python.terminal.launchArgs": [
+    
+    ],
+    "octave.runInTerminal": true,
+    "terminal.integrated.commandsToSkipShell": [
+        "language-julia.interrupt"
+    ],
+    "[julia]": {
+
+        "editor.quickSuggestions": true
+    },
+    "julia.enableTelemetry": false,
+    "julia.enableCrashReporter": null,
+    "julia.environmentPath": "C:\\Program Files\\JuliaPro-1.5.3-1\\Julia-1.5.3\\bin\\julia.exe",
+    "debug.console.historySuggestions": false,
+    "settingsSync.ignoredExtensions": [
+    
+    
+    ],
+    "notebook.outline.showCodeCells": true,
+    "editor.minimap.enabled": false,
+    "go.toolsManagement.autoUpdate": true,
+    "yaml.schemas": {
+        "file:///toc.schema.json": "/toc\\.yml/i"
+    },
+    "jupyter.experiments.enabled": false,
+    "jupyter.logging.level": "off",
+    "terminal.integrated.tabs.enabled": true,
+    "redhat.telemetry.enabled": false,
+    "terminal.integrated.defaultProfile.windows": "C:\\Program Files\\PowerShell\\7\\pwsh.exe (migrated)",
+    "terminal.integrated.profiles.windows": {
+        "C:\\Program Files\\PowerShell\\7\\pwsh.exe (migrated)": {
+            "path": "C:\\Program Files\\PowerShell\\7\\pwsh.exe",
+            "args": []
+        }
+    },
+    "r.rterm.windows": "C:\\Program Files\\R\\R-4.1.0\\bin\\x64\\R.exe",
+    "r.rpath.windows": "C:\\Program Files\\R\\R-4.1.0\\bin\\x64\\R.exe"
+}
