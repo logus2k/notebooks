@@ -1,3 +1,87 @@
+# Azure Virtual Machines
+
+When creating a Windows VM in Azure, you also create resources to host the VM:
+
+* A virtual machine that provides CPU and memory resources.
+* An Azure Storage account to hold the virtual hard disks.
+* Virtual disks to hold the OS, applications, and data.
+* Virtual network (VNet) to connect the VM to other Azure services or your own on-premises hardware.
+* A network interface to communicate with the VNet.
+* A public IP address so you can access the VM. This is optional.
+* A Resource Group to contain the VM (and optionally group these resources together for administration).
+
+
+# Plan each VM deployment
+
+Once you have mapped out your communication and network requirements, you can start thinking about the VMs you want to create. A good plan is to select a server and take an inventory:
+
+* What does the server communicate with?
+* Which ports are open?
+* Which OS is used?
+* How much disk space is in use?
+* What kind of data does this use? Are there restrictions (legal or otherwise) with not having it on-premises?
+* What sort of CPU, memory, and disk I/O load does the server have? Is there burst traffic to account for?
+
+
+## Guidelines to select a VM size:
+
+What are you doing?																		Consider these sizes
+-------------------																		--------------------
+
+General use computing / web Testing and development, small to medium databases,
+or low to medium traffic web servers.													B, Dsv3, Dv3, DSv2, Dv2
+
+Heavy computational tasks Medium traffic web servers, network appliances, batch 
+processes, and application servers.														Fsv2, Fs, F
+
+Large memory usage Relational database servers, medium to large caches, and 
+in-memory analytics.																	Esv3, Ev3, M, GS, G, DSv2, Dv2
+
+Data storage and processing Big Data, SQL, and NoSQL databases, which need high disk 
+throughput and IO.																		Ls
+
+Heavy graphics rendering or video editing, as well as model training and inferencing
+(ND) with deep learning.																NV, NC, NCv2, NCv3, ND
+
+High-performance computing (HPC) If you need the fastest and most powerful CPU 
+virtual machines with optional high-throughput network interfaces.						H
+
+
+# VM Storage
+
+There are two levels of SSD storage available: standard and premium. Choose Standard SSD disks if you have normal workloads but want better performance. Choose Premium SSD disks if you have I/O intensive workloads or mission-critical systems that need to process data very quickly.
+
+
+# Azure Firewall
+
+It's recommended to use a hub-spoke network topology when deploying a firewall.
+
+* The hub is a virtual network in Azure that acts as a central point of connectivity to your on-premises network.
+* The spokes are virtual networks that peer with the hub, and can be used to isolate workloads.
+* Traffic flows between the on-premises datacenter and the hub through an ExpressRoute or VPN gateway connection.
+
+The benefits of this topology include:
+
+* Cost savings by centralizing services that can be shared by multiple workloads, such as network virtual appliances (NVAs) and DNS servers, in a single location.
+* Overcome subscriptions limits by peering virtual networks from different subscriptions to the central hub.
+* Separation of concerns between central IT (SecOps, InfraOps) and workloads (DevOps).
+
+Typical uses for a hub-spoke network architecture include:
+
+* Workloads in different environments that require shared services. For example, development and testing environments that require DNS. Shared services are placed in the hub virtual network. Each environment is deployed to a spoke to maintain isolation.
+* Workloads that don't require connectivity to each other, but require access to shared services.
+* Enterprises that require central control over security aspects. For example, a firewall in the hub and workloads in each spoke.
+
+
+# Azure VPN Gateway
+
+* Site-to-site connections connect on-premises datacenters to Azure virtual networks.
+* VNet-to-VNet connections connect Azure virtual networks (custom).
+* Point-to-site (User VPN) connections connect individual devices to Azure virtual networks.
+
+
+# Azure Monitor
+
 Azure Monitor is the monitoring service used to track availability, health, and performance of applications and infrastructure. It is a powerful reporting and analytics tool. Use it for insights into the behavior and running of your environment and applications. You can then respond proactively to faults in your system.
 
 You use Application Insights to:
@@ -33,19 +117,53 @@ The benefits of multi-master support are:
 - Built-in conflict resolution – Multi-master accounts have three methods for resolving conflicts to ensure global data integrity and consistency.
 
 
-https://escalator-functions-01905389.azurewebsites.net/api/HttpTrigger1?code=XCovXYwNPMjM6bafjW4t/Y9xr8UeGZgWocPolmtOUZXSqnauZQvd/g==
+# Azure Virtual Networks
 
-XCovXYwNPMjM6bafjW4t/Y9xr8UeGZgWocPolmtOUZXSqnauZQvd/g==
+Virtual networks can be used in many ways:
+
+* Create a dedicated private cloud-only VNet. Sometimes you don't require a cross-premises configuration for your solution. When you create a VNet, your services and VMs within your VNet can communicate directly and securely with each other in the cloud. You can still configure endpoint connections for the VMs and services that require internet communication, as part of your solution.
+* Securely extend your data center With VNets. You can build traditional site-to-site (S2S) VPNs to securely scale your datacenter capacity. S2S VPNs use IPSEC to provide a secure connection between your corporate VPN gateway and Azure.
+* Enable hybrid cloud scenarios. VNets give you the flexibility to support a range of hybrid cloud scenarios. You can securely connect cloud-based applications to any type of on-premises system such as mainframes and Unix systems.
+
+Note: There are restrictions on using IP addresses. Azure reserves five IP addresses within each subnet:
+
+* x.x.x.0: Network address
+* x.x.x.1: Reserved by Azure for the default gateway
+* x.x.x.2, x.x.x.3: Reserved by Azure to map the Azure DNS IPs to the VNet space
+* x.x.x.255: Network broadcast address
+
+Note: Plan to use an address space that is not already in use in your organization, either on-premises or in the cloud. Even if you plan for cloud-only virtual networks, you may later decide to connect an on-premises site.
+
+Note: IP Addresses are never managed from within a virtual machine.
 
 
-curl --header "Content-Type: application/json" --header "x-functions-key: XCovXYwNPMjM6bafjW4t/Y9xr8UeGZgWocPolmtOUZXSqnauZQvd/g==" --request POST --data "{\"name\": \"Azure Function\"}" https://escalator-functions-01905389.azurewebsites.net/api/HttpTrigger1?code=XCovXYwNPMjM6bafjW4t/Y9xr8UeGZgWocPolmtOUZXSqnauZQvd/g==
+## Special-Use Addresses
+
+Each of the classes has restrictions on the ranges of IP addresses that can be used. This table shows the more common ones.
+
+Address Range				Scope				Description
+-------------				-----				-----------
+10.0.0.0–10.255.255.255		Private network		Used for local communications within a private network
+127.0.0.0–127.255.255.255	Host				Used for loopback addresses
+172.16.0.0–172.31.255.255	Private network		Used for local communications within a private network
+192.88.99.0–192.88.99.255	Internet			Reserved
+192.168.0.0–192.168.255.255	Private network		Used for local communications within a private network
+255.255.255.255				Subnet				Reserved for the "limited broadcast" destination address
+
 
 
 List Azure role assignments using Azure CLI:
 https://docs.microsoft.com/en-us/azure/role-based-access-control/role-assignments-list-cli
 
 
-# Use Service Bus topics if you:
+# FCAPS
+
+Fault management, configuration management, accounting/administration, performance management, and security, or FCAPS:
+
+
+# Azure Service Bus
+
+## Use Service Bus topics if you:
 
 * Need multiple receivers to handle each message
 * Use Service Bus queues if you:
@@ -58,6 +176,45 @@ https://docs.microsoft.com/en-us/azure/role-based-access-control/role-assignment
 * Queue size will not grow larger than 80 GB.
 * Want to publish and consume batches of messages.
 
+
+# Azure Storage
+
+Azure Storage includes these data services, each of which is accessed through a storage account.
+
+* Azure Containers (Blobs): A massively scalable object store for text and binary data.
+* Azure Files: Managed file shares for cloud or on-premises deployments.
+* Azure Queues: A messaging store for reliable messaging between application components.
+* Azure Tables: A NoSQL store for schemaless storage of structured data.
+
+Blob storage is also referred to as object storage. A container provides a grouping of a set of blobs. All blobs must be in a container. An account can contain an unlimited number of containers. A container can store an unlimited number of blobs.
+
+Block blobs are for your discrete storage objects like jpg's, log files, etc. that you'd typically view as a file in your local OS. 
+Max. size 200GB 4.77TB. Regular (non-Premium) storage only.
+
+Page blobs are for random read/write storage, such as VHD's (in fact, page blobs are what's used for Azure Virtual Machine disks). Max. size 8TB. Supported by both regular and Premium Storage.
+
+A blob can be any type and size file. Azure Storage offers three types of blobs: block blobs, page blobs, and append blobs.
+
+* Block blobs (default) consist of blocks of data assembled to make a blob. Most scenarios using Blob storage employ block blobs. Block blobs are ideal for storing text and binary data in the cloud, like files, images, and videos.
+* Append blobs are like block blobs in that they are made up of blocks, but they are optimized for append operations, so they are useful for logging scenarios.
+* Page blobs can be up to 8 TB in size and are more efficient for frequent read/write operations. Azure virtual machines use page blobs as OS and data disks.
+
+Note: Premium page blobs have specific sizings (unlike regular page blobs, which can be any size up to 8TB).
+
+Premium storage provides guaranteed IOPS and throughput, depending on the page blob size chosen (from 120 IOPS+25MB/s @ 32GB to 7500 IOPS+250MB/s @ 2048GB & 4096GB).
+
+The kinds of storage accounts are:
+
+Storage account						Recommended usage
+---------------						-----------------
+
+Standard general-purpose v2			Most scenarios including Blob, File, Queue, Table, and Data Lake Storage.
+
+Premium block blobs					Block blob scenarios with high transactions rates, or scenarios that use smaller objects or require consistently low storage latency.
+
+Premium file shares					Enterprise or high-performance file share applications.
+
+Premium page blobs					Premium high-performance page blob scenarfrgttt23 ccccgt
 
 # Azure Queue Storage
 
@@ -101,7 +258,6 @@ Choose Event Hubs if:
 * You need to save a stream of events to Data Lake or Blob storage.
 * You need aggregation or analytics on your event stream.
 * You need reliable messaging or resiliency.
-
 
 
 # Service Bus queues and storage queues
@@ -198,6 +354,120 @@ An RTO is a measure of the maximum amount of time your business can survive afte
 An RPO is a measure of the maximum amount of data loss that's acceptable after a disaster. A business may typically decide to do a backup every 24 hours, 12 hours, or even in real time. If a disaster occurs, there's always some data loss.
 
 For example, if your backup occurred at midnight every 24 hours, and a disaster happened at 9:00 AM, then nine hours of data would be lost. If your company's RPO was 12 hours, it would be okay because only nine hours passed. If the RPO was four hours, there would be a problem and damage would occur to the business.
+
+
+# Service Level Agreements (SLAs)
+
+* For all Virtual Machines that have two or more instances deployed across two or more Availability Zones in the same Azure region, we guarantee you will have Virtual Machine Connectivity to at least one instance at least 99.99% of the time.
+* For all Virtual Machines that have two or more instances deployed in the same Availability Set, we guarantee you will have Virtual Machine Connectivity to at least one instance at least 99.95% of the time.
+* For any Single Instance Virtual Machine using premium storage for all Operating System Disks and Data Disks, we guarantee you will have Virtual Machine Connectivity of at least 99.9%.
+
+
+# App service plan pricing
+
+You can start testing your web app in a Free App Service plan and pay nothing. When you want to add your custom DNS name to the web app, just scale your plan up to the Shared tier. Later, when you want to create an SSL binding, scale your plan up to Basic tier. When you want to have staging environments, scale up to Standard tier. When you need more cores, memory, or storage, scale up to a bigger VM size in the same tier.
+
+* Free and Shared. The Free and Shared service plans are base tiers that run on the same Azure VMs as other apps. Some apps may belong to other customers. These tiers are intended to be used only for development and testing purposes. There is no SLA provided for Free and Shared service plans. Free and Shared plans are metered on a per App basis.
+
+* Basic. The Basic service plan is designed for apps that have lower traffic requirements, and don't need advanced auto scale and traffic management features. Pricing is based on the size and number of instances you run. Built-in network load-balancing support automatically distributes traffic across instances. The Basic service plan with Linux runtime environments supports Web App for Containers.
+
+* Standard. The Standard service plan is designed for running production workloads. Pricing is based on the size and number of instances you run. Built-in network load-balancing support automatically distributes traffic across instances. The Standard plan includes auto scale that can automatically adjust the number of virtual machine instances running to match your traffic needs. The Standard service plan with Linux runtime environments supports Web App for Containers.
+
+* Premium. The Premium service plan is designed to provide enhanced performance for production apps. The upgraded Premium plan, Premium v2, features Dv2-series VMs with faster processors, SSD storage, and double memory-to-core ratio compared to Standard. The new Premium plan also supports higher scale via increased instance count while still providing all the advanced capabilities found in the Standard plan. The first generation of Premium plan is still available for existing customers’ scaling needs.
+
+* Isolated. The Isolated service plan is designed to run mission critical workloads, that are required to run in a virtual network. The Isolated plan allows customers to run their apps in a private, dedicated environment in an Azure datacenter using Dv2-series VMs with faster processors, SSD storage, and double the memory-to-core ratio compared to Standard. The private environment used with an Isolated plan is called the App Service Environment. The plan can scale to 100 instances with more available upon request.
+
+## Considerations
+
+* Having a minimum instance count makes sure your application is always running even under no load.
+* Having a maximum instance count limits your total possible hourly cost.
+* You can automatically scale between the minimum and maximum using rules you create.
+* Ensure the maximum and minimum values are different and have an adequate margin between them.
+* Always use a scale-out and scale-in rule combination that performs an increase and decrease.
+* Choose the appropriate statistic for your diagnostics metric (Average, Minimum, Maximum and Total).
+* Always select a safe default instance count. The default instance count is important because autoscale scales your service to that count when metrics are not available.
+* Always configure autoscale notifications.
+
+# App Service
+
+## Backup Considerations
+
+* The Backup and Restore feature requires the App Service plan to be in the Standard tier or Premium tier.
+* You can configure backups manually or on a schedule.
+* You need an Azure storage account and container in the same subscription as the app that you want to back up. After you have made one or more backups for your app, the backups are visible on the Containers page of your storage account, and your app. In the storage account, each backup consists of a.zip file that contains the backup data and an .xml file that contains a manifest of the .zip file contents. You can unzip and browse these files if you want to access your backups without actually performing an app restore.
+* Full backups are the default. When a full backup is restored, all content on the site is replaced with whatever is in the backup. If a file is on the site, but not in the backup it gets deleted.
+* Partial backups are supported. Partial backups allow you choose exactly which files you want to back up. When a partial backup is restored, any content that is located in one of the excluded directories, or any excluded file, is left as is. You restore partial backups of your site the same way you would restore a regular backup.
+* You can exclude files and folders you do not want in the backup.
+* Backups can be up to 10 GB of app and database content.
+* Using a firewall enabled storage account as the destination for your backups is not supported.
+
+
+# Application Insights features
+
+Application Insights is aimed at the development team, to help you understand how your app is performing and how it's being used. It monitors:
+
+* Request rates, response times, and failure rates - Find out which pages are most popular, at what times of day, and where your users are. See which pages perform best. If your response times and failure rates go high when there are more requests, then perhaps you have a resourcing problem.
+* Dependency rates, response times, and failure rates - Find out whether external services are slowing you down.
+* Exceptions - Analyze the aggregated statistics, or pick specific instances and drill into the stack trace and related requests. Both server and browser exceptions are reported.
+* Page views and load performance - reported by your users' browsers.
+* User and session counts.
+* Performance counters from your Windows or Linux server machines, such as CPU, memory, and network usage.
+* Host diagnostics from Docker or Azure.
+* Diagnostic trace logs from your app - so that you can correlate trace events with requests.
+* Custom events and metrics that you write yourself in the client or server code, to track business events such as items sold or games won.
+
+
+# Docker Terminology
+
+You should be familiar with the following key terms before using Docker and Container Instances to create, build, and test containers:
+
+* Container. Container is an instance of a Docker image. It represents the execution of a single application, process, or service. It consists of the contents of a Docker image, an execution environment, and a standard set of instructions. When scaling a service, you create multiple instances of a container from the same image. Or a batch job can create multiple containers from the same image, passing different parameters to each instance.
+* Container image. Container image refers to a package with all the dependencies and information required to create a container. The dependencies include frameworks and the deployment and execution configuration that a container runtime uses. Usually, an image derives from multiple base images that are layers stacked on top of each other to form the container's file system. An image is immutable once it has been created.
+* Build. Build refers to the action of building a container image based on the information and context provided by the Dockerfile. The build also includes any other files that are needed. You build images by using the Docker docker build command.
+* Pull. Pull refers to the process of downloading a container image from a container registry.
+* Push. Push refers to the process of uploading a container image to a container registry.
+* Dockerfile. Dockerfile refers to a text file that contains instructions on how to build a Docker image. The Dockerfile is like a batch script. The first line identifies the base image. The rest of the file includes the build actions.
+
+# Azure Multi-Container Groups - Common Scenarios
+
+Multi-container groups are useful in cases where you want to divide a single functional task into a small number of container images. These images can then be delivered by different teams and have separate resource requirements.
+
+Example usage could include:
+
+* A container serving a web application and a container pulling the latest content from source control.
+* An application container and a logging container. The logging container collects the logs and metrics output by the main application and writes them to long-term storage.
+* An application container and a monitoring container. The monitoring container periodically makes a request to the application to ensure that it's running and responding correctly, and raises an alert if it's not.
+* A front-end container and a back-end container. The front end might serve a web application, with the back end running a service to retrieve data.
+
+
+# AKS Terminology
+
+* Pools are groups of nodes with identical configurations.
+* Nodes are individual virtual machines running containerized applications.
+* Pods are a single instance of an application. A pod can contain multiple containers.
+* Container is a lightweight and portable executable image that contains software and all of its dependencies.
+* Deployment has one or more identical pods managed by Kubernetes.
+* Manifest is the YAML file describing a deployment.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
