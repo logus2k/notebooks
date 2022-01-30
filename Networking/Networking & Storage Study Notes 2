@@ -451,26 +451,114 @@ Example usage could include:
 
 
 
+# Azure Active Directory Editions
+
+* Azure Active Directory Free: Provides user and group management, on-premises directory synchronization, basic reports, and single sign-on across Azure, Microsoft 365, and many popular SaaS apps.
+
+* Azure Active Directory Microsoft 365 Apps: This edition is included with O365. In addition to the Free features, this edition provides Identity & Access Management for Microsoft 365 apps including branding, MFA, group access management, and self-service password reset for cloud users.
+
+* Azure Active Directory Premium P1: In addition to the Free features, P1 also lets your hybrid users access both on-premises and cloud resources. It also supports advanced administration, such as dynamic groups, self-service group management, Microsoft Identity Manager (an on-premises identity and access management suite) and cloud write-back capabilities, which allow self-service password reset for your on-premises users.
+
+* Azure Active Directory Premium P2: In addition to the Free and P1 features, P2 also offers Azure Active Directory Identity Protection to help provide risk-based Conditional Access to your apps and critical company data. Privileged Identity Management is included to help discover, restrict, and monitor administrators and their access to resources and to provide just-in-time access when needed.
+
+
+# Manage DNS Records
+
+Your domain name would be useless without the Domain Name System (DNS). This distributed system of computers provides a lookup database that associates a domain name with DNS records. One domain name can have alias records that point to:
+
+* Web servers by using A, AAAA, and CNAME records.
+* Email services by using MX records.
+* Name servers by using NS records.
+* Proof of ownership by using TXT records.
+
+
+
+
+https://docs.microsoft.com/en-us/learn/paths/azure-administrator-monitor-backup-resources/
+
+https://docs.microsoft.com/en-us/learn/paths/azure-administrator-manage-virtual-networks/
+
+https://docs.microsoft.com/en-us/learn/paths/azure-administrator-manage-compute-resources/
+
+https://docs.microsoft.com/en-us/learn/paths/azure-administrator-manage-storage/
+
+https://docs.microsoft.com/en-us/learn/paths/azure-administrator-manage-identities-governance/
+
+https://docs.microsoft.com/en-us/learn/modules/create-custom-azure-roles-with-rbac/2-what-are-custom-roles
 
 
 
 
 
 
+M:\B\Billy F Gibbons\2021 - Hardware
+
+M:\L\Linkin Park\2010 - A Thousand Suns
+
+M:\C\Cock Robin
 
 
 
+Get-ChildItem -Filter "*.flac" | Rename-Item -NewName {$_.Name -replace $_.Name, ($_.Name.Substring(0, 2) + " - " + $_.Name.Substring(4))}
+
+^(\d{2})(\.[ ])\b
 
 
 
+^\[(\d+)\][ ]\b( - Frank Sinatra)(\..+)$
+
+[1] Come Fly With Me - Frank Sinatra.flac
+[30] Come Fly With Me - Frank Sinatra.flac
+[903] Come Fly With Me - Frank Sinatra.flac
+[5625] Come Fly With Me - Frank Sinatra.flac
 
 
+^\[(\d+)\][ ](.*)( - Frank Sinatra)(\..*)
 
 
+(?<=\[)\d{1}(?!\d{1}\])[ ](.*)$
 
 
+/^(\[)((\d{1})|(\d{2}))(\])([ ])((?<artist1>Frank Sinatra)?(\s-\s)(?<title1>.*)|(?<title2>.*)(\s-\s)(?<artist2>Frank Sinatra)?)(?<extension>\..*)$
 
 
+[8] Frank Sinatra - Come Fly With Me.flac
+[51] Come Fly With Me - Frank Sinatra.flac
+
+${3:+0$3:$4} - ${title1}${title2}${extension}
+${3:+0$3:$4} - ${title1}${title2}${extension}
+
+
+(?sx)(\b\d\b)(?=.*:\1=(\w+))
+
+
+"[1] Come Fly With Me - Frank Sinatra.flac
+[34] Frank Sinatra - Come Fly With Me.flac
+RegExDictionary:LOOKUP0=00:LOOKUP1=01:LOOKUP2=02:LOOKUP3=03:LOOKUP4=04:LOOKUP5=05:LOOKUP6=06:LOOKUP7=07:LOOKUP8=08:LOOKUP9=09"
+
+
+Get-ChildItem $FileSpecs | %{$_.Name -Replace $Match, $Substitute}
+Get-ChildItem $FileSpecs | %{switch -Regex ($_.Name){ 'bla' {$Substitute} }}
+
+Get-ChildItem '*.flac' | %{$TmpName = $_.Name -Replace $Match, $Substitute; $($TmpName.Substring(0, 2) + ' - ' + $TmpName.Substring(2))}
+
+
+Sabaton
+Powerwolf
+Kanye West
+* Tyler The Creator
+Kid Cudi
+Lil Peep
+Death Grips
+Rui Veloso
+Girl In Red
+Suicide Boys
+MGMT
+Tame Impala
+Mom Jeans.
+Fall Out Boy
+Bring Me The Horizon
+100 Gecs
 
 
 
