@@ -1,3 +1,1 @@
-# My Jupyter Notebooks Repo
-
-Notes on Math, Statistics et al.
+# Notes on Math, Statistics et al.
